@@ -1,6 +1,7 @@
 package GUI.Util;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 public class Exceptions {
 
@@ -12,6 +13,14 @@ public class Exceptions {
         alert.setContentText(e.getMessage());
         alert.showAndWait();
 
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     public void noAddMovie(Exception e) {
@@ -32,5 +41,16 @@ public class Exceptions {
 
     public void invalidRating(Exception e){
         showErrorAlert(Alert.AlertType.ERROR, "Invalid Rating", "The provided rating is not valid",e);
+    }
+
+    private static Alert showDeleteAlert(String message) {
+        Alert confirmationAlert = new Alert(Alert.AlertType.NONE, //Use NONE inorder to get rid of the standard icon
+                message,
+                ButtonType.YES, ButtonType.NO);
+
+        confirmationAlert.setAlertType(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setHeaderText(null); //inorder to make it more simple
+        confirmationAlert.setGraphic(null); // Removes the questionmark
+        return confirmationAlert;
     }
 }

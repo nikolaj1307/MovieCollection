@@ -69,7 +69,6 @@ public class MainController implements Initializable {
     private MFXTextField searchField;
     private Exceptions exceptions;
 
-    private Exceptions exceptions;
 
     // Model instance for accessing movie data
     private MovieModel movieModel;
@@ -131,31 +130,50 @@ public class MainController implements Initializable {
     }
 
     public void onClickRemove(ActionEvent event) {
-        Movie selectedMovie = (Movie) movieTblView.getSelectionModel().getSelectedItem();
+        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
         if (selectedMovie != null) {
 
             String alertMessage = "Are you sure you want to delete '" +
                     selectedMovie.getName() + "'?";
-            Alert confirmationAlert = exceptions.noDeleteMovie();
+            Alert confirmationAlert = showDeleteAlert(alertMessage);
 
             Optional<ButtonType> result = confirmationAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 try {
                     movieModel.deleteMovie(selectedMovie);
                     movieModel.getObservableMovies().remove(selectedMovie);
+                    System.out.println("MainController");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         } else {
             if (selectedMovie == null) {
-                exceptions.noDeleteMovie();
+                showAlert("No movie selected", "Please select a movie for deletion");
             }
         }
     }
 
     public void onClickPersonalRating(ActionEvent event) {
 
+    }
+
+    private static Alert showDeleteAlert(String message) {
+        Alert confirmationAlert = new Alert(Alert.AlertType.NONE, //Use NONE inorder to get rid of the standard icon
+                message,
+                ButtonType.YES, ButtonType.NO);
+
+        confirmationAlert.setAlertType(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setHeaderText(null); //inorder to make it more simple
+        confirmationAlert.setGraphic(null); // Removes the questionmark
+        return confirmationAlert;
+    }
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
 

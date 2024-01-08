@@ -27,6 +27,7 @@ public class MovieModel {
 
     // Getter for the observable list of movies
     public ObservableList<Movie> getObservableMovies() {
+
         return moviesToBeViewed;
     }
 
@@ -42,12 +43,12 @@ public class MovieModel {
         moviesToBeViewed.add(movie);
     }
 
-    public void deleteMovie(Movie selectedMovie) throws Exception {
+    public void deleteMovie(Movie movie) throws Exception {
         // delete movie in DAL layer (through the layers)
-        movieManager.deleteMovie(selectedMovie);
-
+        movieManager.deleteMovie(movie);
         // remove from observable list (and UI)
-        moviesToBeViewed.remove(selectedMovie);
+        moviesToBeViewed.remove(movie);
+        System.out.println("MovieModel");
     }
 }
 

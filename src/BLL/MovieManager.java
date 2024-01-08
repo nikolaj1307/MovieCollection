@@ -4,6 +4,7 @@ import BE.Movie;
 import BLL.Utility.MovieSearcher;
 import DAL.DB.MovieDAO_DB;
 import DAL.IMovieDataAccess;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +31,7 @@ public class MovieManager {
 
     public void deleteMovie(Movie movie) throws Exception {
         movieDAO.deleteMovie(movie);
+        System.out.println("MovieManager");
     }
 
 }

@@ -24,7 +24,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
             try (Connection conn = databaseConnector.getConnection();
                  Statement stmt = conn.createStatement())
             {
-                String sql = "SELECT * FROM DBO.Movie ";
+                String sql = "SELECT * FROM dbo.Movie";
                 ResultSet rs = stmt.executeQuery(sql);
 
                 // Loop through rows from the database result set
@@ -36,9 +36,9 @@ public class MovieDAO_DB implements IMovieDataAccess {
                     double rating = rs.getDouble("Rating");
                     String fileLink = rs.getString("FileLink");
                     int lastView = rs.getInt("LastView");
-                    double personalRating = rs.getDouble("PersonalRating");
+                    //double personalRating = rs.getDouble("PersonalRating");
 
-                    Movie movie = new Movie(name, rating, fileLink, lastView);
+                    Movie movie = new Movie(id, name, rating, fileLink, lastView);
                     allMovies.add(movie);
                 }
                 return allMovies;
@@ -52,16 +52,19 @@ public class MovieDAO_DB implements IMovieDataAccess {
         @Override
         public Movie createMovie(Movie movie) throws Exception {
 
-            String sql = "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?,?,?);";
+            String sql = "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?,?,?,?);";
 
             try (Connection conn = databaseConnector.getConnection()) {
                 PreparedStatement stmt = conn.prepareStatement(sql,
                         Statement.RETURN_GENERATED_KEYS);
 
                 // Bind parameters
-                stmt.setString(1, movie.getName());
-                stmt.setDouble(2, movie.getRating());
-                stmt.setString(3, movie.getFileLink());
+                stmt.setInt(1, movie.getId());
+                stmt.setString(2, movie.getName());
+                stmt.setDouble(3, movie.getRating());
+                stmt.setString(4, movie.getFileLink());
+
+
 
 
 
@@ -76,7 +79,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
                     id = rs.getInt(1);
                 }
 
-                Movie createdMovie = new Movie(movie.getName(), movie.getRating(), movie.getFileLink(), id);
+                Movie createdMovie = new Movie(movie.getId(), movie.getName(), movie.getRating(), movie.getFileLink(), id);
 
                 return createdMovie;
             } catch (SQLException e) {
@@ -92,7 +95,24 @@ public class MovieDAO_DB implements IMovieDataAccess {
         @Override
         public Movie deleteMovie(Movie movie) throws Exception {
 
-            return null;
+            String sql = "DELETE FROM dbo.Movie WHERE Id = ?;";
+
+            try (Connection conn = databaseConnector.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql))
+            {
+                // Bind parameters
+                stmt.setInt(1, movie.getId());
+
+                stmt.executeUpdate();
+                // Run the specified SQL statement
+                System.out.println("MovieDAO");
+            }
+            catch (SQLException ex)
+            {
+                ex.printStackTrace();
+                throw new Exception("Could not delete movie", ex);
+            }
+            return movie;
         }
 
 
