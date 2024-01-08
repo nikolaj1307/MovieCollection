@@ -2,8 +2,11 @@ package GUI.Model;
 
 import BE.Movie;
 import BLL.MovieManager;
+import BLL.Utility.MovieSearcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.List;
 
 public class MovieModel {
 
@@ -12,6 +15,7 @@ public class MovieModel {
 
     // Manager for handling movie-related business logic
     private MovieManager movieManager;
+    private MovieSearcher movieSearcher = new MovieSearcher();
 
     // Constructor initializes the MovieManager and loads movies into the observable list
     public MovieModel() throws Exception {
@@ -49,6 +53,12 @@ public class MovieModel {
         // remove from observable list (and UI)
         moviesToBeViewed.remove(movie);
         System.out.println("MovieModel");
+    }
+
+    public void searchMovie(String query) throws Exception {
+        List<Movie> searchResult = movieManager.searchMovie(query);
+        moviesToBeViewed.clear();
+        moviesToBeViewed.addAll(searchResult);
     }
 }
 

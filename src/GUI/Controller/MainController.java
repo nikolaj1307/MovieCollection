@@ -93,7 +93,16 @@ public class MainController implements Initializable {
 
         // Set the table items from the observable list in the model
         movieTblView.setItems(movieModel.getObservableMovies());
+        //SearchBar
+        searchField.textProperty().addListener(((observable, oldValue, newValue) ->{
+            try {
+                movieModel.searchMovie(newValue);
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        }));
     }
+
 
     // Method to update the playlist table
     public void updatePlaylistTable() {

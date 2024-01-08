@@ -96,6 +96,7 @@ public class AddMovieController {
         // If a file is selected, set its name in the FilePathField
         if (file != null) {
             MovieNameField.setText((file.getName()));
+            FilePathField.setText(file.getName());
         }
     }
 

@@ -14,6 +14,7 @@ public class MovieManager {
     // Data access object for handling movie-related database operations
     private IMovieDataAccess movieDAO;
 
+    private MovieSearcher movieSearcher = new MovieSearcher();
     // Constructor initializes the movieDAO with a concrete implementation (MovieDAO_DB)
     public MovieManager() throws IOException {
         movieDAO = new MovieDAO_DB();
@@ -32,6 +33,12 @@ public class MovieManager {
     public void deleteMovie(Movie movie) throws Exception {
         movieDAO.deleteMovie(movie);
         System.out.println("MovieManager");
+    }
+
+    public List<Movie> searchMovie (String query) throws Exception {
+        List<Movie> allMovies = getAllMovies();
+        List<Movie> movieResult = movieSearcher.search(allMovies, query);
+        return movieResult;
     }
 
 }

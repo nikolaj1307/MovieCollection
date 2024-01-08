@@ -52,21 +52,18 @@ public class MovieDAO_DB implements IMovieDataAccess {
         @Override
         public Movie createMovie(Movie movie) throws Exception {
 
-            String sql = "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?,?,?,?);";
+            String sql =
+
+            "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?,?,?);";
 
             try (Connection conn = databaseConnector.getConnection()) {
                 PreparedStatement stmt = conn.prepareStatement(sql,
                         Statement.RETURN_GENERATED_KEYS);
 
                 // Bind parameters
-                stmt.setInt(1, movie.getId());
-                stmt.setString(2, movie.getName());
-                stmt.setDouble(3, movie.getRating());
-                stmt.setString(4, movie.getFileLink());
-
-
-
-
+                stmt.setString(1, movie.getName());
+                stmt.setDouble(2, movie.getRating());
+                stmt.setString(3, movie.getFileLink());
 
                 // Run the specified SQL statement
                 stmt.executeUpdate();
@@ -79,7 +76,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
                     id = rs.getInt(1);
                 }
 
-                Movie createdMovie = new Movie(movie.getId(), movie.getName(), movie.getRating(), movie.getFileLink(), id);
+                Movie createdMovie = new Movie(movie.getName(), movie.getRating(), movie.getFileLink());
 
                 return createdMovie;
             } catch (SQLException e) {
