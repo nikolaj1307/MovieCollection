@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox?>
+<?import io.github.palexdev.materialfx.controls.legacy.MFXLegacyTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.paint.Color?>
+
+<BorderPane fx:id="BorderPane" opacity="0.9" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #161616;" stylesheets="@../Css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainController">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+    <bottom>
+        <AnchorPane prefHeight="74.0" prefWidth="778.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="17.0" layoutY="8.0" prefHeight="56.0" prefWidth="309.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="457.0" AnchorPane.topAnchor="5.0">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <children>
+                        <MFXButton fx:id="btnAddMovie" buttonType="RAISED" onAction="#onClickAddMovie" prefHeight="27.0" prefWidth="110.0" rippleColor="#95ecff" text="Add movie" textAlignment="CENTER">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                        </MFXButton>
+                        <MFXButton fx:id="btnRemove" buttonType="RAISED" onAction="#onClickRemove" prefHeight="27.0" prefWidth="110.0" rippleColor="#95ecff" text="Remove" textAlignment="CENTER">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                        </MFXButton>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" layoutX="576.0" layoutY="19.0" prefHeight="37.0" prefWidth="186.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="571.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="5.0">
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <children>
+                        <MFXButton fx:id="btnPersonalRating" buttonType="RAISED" onAction="#onClickPersonalRating" prefHeight="27.0" prefWidth="110.0" rippleColor="#95ecff" text="Personal rating" />
+                    </children>
+                </HBox>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </AnchorPane>
+    </bottom>
+    <top>
+        <AnchorPane prefHeight="76.0" prefWidth="780.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="5.0" prefHeight="110.0" prefWidth="261.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="426.0" AnchorPane.topAnchor="5.0">
+                    <children>
+                        <ImageView fitHeight="348.0" fitWidth="335.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../Images/movieLogo.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                            <viewport>
+                                <Rectangle2D />
+                            </viewport>
+                        </ImageView>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </HBox>
+                <HBox alignment="CENTER_RIGHT" layoutX="347.0" layoutY="43.0" prefHeight="54.0" prefWidth="346.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="5.0">
+                    <children>
+                        <MFXTextField fx:id="searchField" floatMode="ABOVE" prefHeight="30.0" prefWidth="206.0" promptText="🔍 Search " />
+                        <MFXLegacyComboBox fx:id="comBoxCategory" promptText="Category" unfocusedLineColor="WHITE">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                        </MFXLegacyComboBox>
+                        <MFXLegacyComboBox fx:id="comBoxRating" promptText="Rating" unfocusedLineColor="WHITE">
+                            <HBox.margin>
+                                <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                            </HBox.margin>
+                        </MFXLegacyComboBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </AnchorPane>
+    </top>
+    <center>
+        <MFXLegacyTableView fx:id="movieTblView" prefHeight="185.0" prefWidth="794.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
+                <TableColumn fx:id="colCategory" prefWidth="75.0" text="Category" />
+                <TableColumn fx:id="colImdb" prefWidth="75.0" text="Imdb" />
+                <TableColumn fx:id="colPersonalRating" prefWidth="75.0" text="Personal rating " />
+                <TableColumn fx:id="colViewHistory" prefWidth="75.0" text="View history" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+            <effect>
+                <DropShadow radius="12.9475" width="32.79">
+                    <color>
+                        <Color opacity="0.3021032512187958" />
+                    </color>
+                </DropShadow>
+            </effect>
+        </MFXLegacyTableView>
+    </center>
+</BorderPane>
