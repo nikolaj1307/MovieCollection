@@ -69,6 +69,8 @@ public class MainController implements Initializable {
     private MFXTextField searchField;
     private Exceptions exceptions;
 
+    private Exceptions exceptions;
+
     // Model instance for accessing movie data
     private MovieModel movieModel;
 
@@ -100,20 +102,25 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void onClickAddMovie(ActionEvent event) throws IOException {
+    public void onClickAddMovie(ActionEvent event)  {
+        try {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddMovieView.fxml"));
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Add movie");
-        stage.setResizable(false);
-        stage.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddMovieView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Add movie");
+            stage.setResizable(false);
+            stage.show();
 
-        // Get the controller for the AddMovieView.fxml
-        AddMovieController addMovieController = loader.getController();
-        // Pass the reference to the main controller to allow communication between controllers
-        addMovieController.setMainController(this);
+            // Get the controller for the AddMovieView.fxml
+            AddMovieController addMovieController = loader.getController();
+            // Pass the reference to the main controller to allow communication between controllers
+            addMovieController.setMainController(this);
+        }catch (IOException e){
+            exceptions.noAddMovie(e);
+            e.printStackTrace();
+        }
 
     }
 
