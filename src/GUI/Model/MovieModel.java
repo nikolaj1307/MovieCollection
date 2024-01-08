@@ -42,4 +42,13 @@ public class MovieModel {
         moviesToBeViewed.add(movie);
     }
 
+    public void deleteMovie(Movie selectedMovie) throws Exception {
+        // delete movie in DAL layer (through the layers)
+        movieManager.deleteMovie(selectedMovie);
+
+        // remove from observable list (and UI)
+        moviesToBeViewed.remove(selectedMovie);
+    }
 }
+
+

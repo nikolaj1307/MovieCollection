@@ -3,6 +3,7 @@ package GUI.Controller;
 import GUI.Model.MovieModel;
 import BE.Category;
 import BE.Movie;
+import GUI.Util.Exceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
@@ -13,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +23,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -63,6 +67,7 @@ public class MainController implements Initializable {
 
     @FXML
     private MFXTextField searchField;
+    private Exceptions exceptions;
 
     // Model instance for accessing movie data
     private MovieModel movieModel;
@@ -119,9 +124,31 @@ public class MainController implements Initializable {
     }
 
     public void onClickRemove(ActionEvent event) {
+        Movie selectedMovie = (Movie) movieTblView.getSelectionModel().getSelectedItem();
+        if (selectedMovie != null) {
+
+            String alertMessage = "Are you sure you want to delete '" +
+                    selectedMovie.getName() + "'?";
+            Alert confirmationAlert = exceptions.noDeleteMovie();
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                try {
+                    movieModel.deleteMovie(selectedMovie);
+                    movieModel.getObservableMovies().remove(selectedMovie);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            if (selectedMovie == null) {
+                exceptions.noDeleteMovie();
+            }
+        }
     }
 
     public void onClickPersonalRating(ActionEvent event) {
+
     }
 }
 
