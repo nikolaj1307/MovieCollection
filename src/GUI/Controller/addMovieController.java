@@ -2,35 +2,29 @@ package GUI.Controller;
 
 import BE.Category;
 import BE.Movie;
-import GUI.Main;
+import BLL.CategoryManager;
 import GUI.Model.CategoryModel;
 import GUI.Model.MovieModel;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import GUI.Controller.MainController;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AddMovieController {
+public class addMovieController {
 
     // FXML elements for UI controls
     @FXML
     private MFXButton AddMovieCancelBtn;
 
     @FXML
-    private MFXComboBox<String> CategoryBox;
+    private MFXComboBox<String> categoryBox;
 
     @FXML
     private MFXButton AddMovieSaveBtn;
@@ -51,14 +45,21 @@ public class AddMovieController {
     private CategoryModel categoryModel;
     private MovieModel movieModel;
 
+    private CategoryManager categoryManager;
+
+
     // Constructor for initializing model instances
-    public AddMovieController() {
+    public addMovieController() {
         try {
             movieModel = new MovieModel();
             categoryModel = new CategoryModel();
+            categoryManager = new CategoryManager();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+    public void initialize () {
+        loadCategories();
     }
 
     private MainController mainController;
@@ -70,7 +71,7 @@ public class AddMovieController {
 
 
     @FXML
-    public void OnClickAddMovieCancelBtn(ActionEvent event) {
+    public void onClickAddMovieCancelBtn(ActionEvent event) {
         // Close the current stage
         Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();
         stage.close();
@@ -78,7 +79,7 @@ public class AddMovieController {
 
 
     @FXML
-    public void OnClickFileChooserBtn(ActionEvent event) {
+    public void onClickFileChooserBtn(ActionEvent event) {
         // Open a new stage for the file chooser
         Stage stage = new Stage();
 
@@ -101,7 +102,7 @@ public class AddMovieController {
     }
 
     @FXML
-    public void OnClickAddMovieSaveBtn(ActionEvent event) throws Exception {
+    public void onClickAddMovieSaveBtn(ActionEvent event) throws Exception {
         // Create a new movie using data from text fields
         movieModel.createMovie(MovieNameField.getText(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
 
@@ -125,7 +126,18 @@ public class AddMovieController {
     }
 
 
-    public void OnClickCategoryBox(ActionEvent event) {
+    public void onClickCategoryBox(MouseEvent event) {
+    }
 
+    public void loadCategories() {
+        try {
+            List<Category> allCategories = categoryManager.getAllCategories();
+            categoryBox.getItems().clear();
+            for (Category category : allCategories) {
+                categoryBox.getItems().add(category.getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

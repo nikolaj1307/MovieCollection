@@ -9,16 +9,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="AnchorPane" prefHeight="400.0" prefWidth="400.0" stylesheets="@../Css/AddMovie.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.AddMovieController">
+<AnchorPane fx:id="AnchorPane" prefHeight="400.0" prefWidth="400.0" stylesheets="@../Css/AddMovie.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.addMovieController">
    <children>
       <HBox alignment="CENTER" layoutX="61.0" layoutY="327.0" prefHeight="68.0" prefWidth="278.0">
          <children>
-            <MFXButton fx:id="AddMovieCancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#OnClickAddMovieCancelBtn" rippleColor="#95ecff" text="Cancel">
+            <MFXButton fx:id="AddMovieCancelBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onClickAddMovieCancelBtn" rippleColor="#95ecff" text="Cancel">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </MFXButton>
-            <MFXButton fx:id="AddMovieSaveBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#OnClickAddMovieSaveBtn" rippleColor="#95ecff" text="Save">
+            <MFXButton fx:id="AddMovieSaveBtn" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#onClickAddMovieSaveBtn" rippleColor="#95ecff" text="Save">
                <HBox.margin>
                   <Insets bottom="10.0" left="80.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -32,7 +32,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </TextField>
-            <MFXButton fx:id="FileChooserBtn" buttonType="RAISED" onAction="#OnClickFileChooserBtn" prefHeight="27.0" prefWidth="46.0" text="...">
+            <MFXButton fx:id="FileChooserBtn" buttonType="RAISED" onAction="#onClickFileChooserBtn" prefHeight="27.0" prefWidth="46.0" text="...">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
@@ -83,7 +83,7 @@
                   <Font name="K2D Thin Italic" size="13.0" />
                </font>
             </Text>
-            <MFXComboBox fx:id="CategoryBox" floatMode="ABOVE" onAction="#OnClickCategoryBox" text="Select">
+            <MFXComboBox fx:id="categoryBox" floatMode="ABOVE" onAction="#onClickCategoryBox" onMouseClicked="#onClickCategoryBox" text="Select">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>

@@ -25,7 +25,7 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
 
         try (Connection conn = databaseConnector.getConnection();
              Statement stmt = conn.createStatement()) {
-            String sql = "SELECT Name FROM DBO.Category ";
+            String sql = "SELECT * FROM DBO.Category; ";
             ResultSet rs = stmt.executeQuery(sql);
 
             // Loop through rows from the database result set
@@ -37,10 +37,10 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
 
                 Category category = new Category(id, name);
                 allCategories.add(category);
+                System.out.println("Category = " + category.getName());
             }
             return allCategories;
         }
-
     }
 
     @Override
