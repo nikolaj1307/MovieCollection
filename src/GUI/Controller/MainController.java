@@ -163,8 +163,30 @@ public class MainController implements Initializable {
         }
     }
 
-    public void onClickPersonalRating(ActionEvent event) {
+    public void onClickPersonalRating(ActionEvent event) throws IOException {
+        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
 
+        btnPersonalRating.setDisable(true);
+
+        if (selectedMovie != null){
+            btnPersonalRating.setDisable(false);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PersonalRatingView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+
+            stage.setTitle("Personal rating");
+
+            PersonalRatingController personalRatingController = loader.getController();
+            personalRatingController.setMainController(this);
+
+            stage.show();
+
+
+        } else {
+            btnPersonalRating.setDisable(false);
+        }
     }
 
     private static Alert showDeleteAlert(String message) {

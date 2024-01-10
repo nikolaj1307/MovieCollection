@@ -49,13 +49,8 @@ import javafx.stage.Stage;
         }
 
         public void OnClickPersonalRatingSaveBtn(ActionEvent event) throws Exception {
-
-
-
             Stage stage = (Stage) PersonalRatingSaveBtn.getScene().getWindow();
             stage.close();
-
-
         }
     }
 
