@@ -122,7 +122,7 @@ public class MainController implements Initializable {
             stage.show();
 
             // Get the controller for the AddMovieView.fxml
-            addMovieController addMovieController = loader.getController();
+            AddMovieController addMovieController = loader.getController();
             // Pass the reference to the main controller to allow communication between controllers
             addMovieController.setMainController(this);
         }catch (IOException e){

@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.List;
 
-public class addMovieController {
+public class AddMovieController {
 
     // FXML elements for UI controls
     @FXML
@@ -49,7 +49,7 @@ public class addMovieController {
 
 
     // Constructor for initializing model instances
-    public addMovieController() {
+    public AddMovieController() {
         try {
             movieModel = new MovieModel();
             categoryModel = new CategoryModel();
