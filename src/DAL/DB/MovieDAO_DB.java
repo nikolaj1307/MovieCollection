@@ -36,9 +36,9 @@ public class MovieDAO_DB implements IMovieDataAccess {
                     double rating = rs.getDouble("Rating");
                     String fileLink = rs.getString("FileLink");
                     int lastView = rs.getInt("LastView");
-                    //double personalRating = rs.getDouble("PersonalRating");
+                    double personalRating = rs.getDouble("PersonalRating");
 
-                    Movie movie = new Movie(id, name, rating, fileLink, lastView);
+                    Movie movie = new Movie(id, name, rating, fileLink, lastView, personalRating);
                     allMovies.add(movie);
                 }
                 return allMovies;
@@ -84,12 +84,28 @@ public class MovieDAO_DB implements IMovieDataAccess {
             }
         }
 
-        @Override
-        public void updateMovie(Movie movie) throws Exception {
+    @Override
+    public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
+        String sql = "UPDATE dbo.movie SET PersonalRating = ? WHERE [id] = ?;";
 
+        try (Connection conn = databaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setDouble(1, newRating);
+            stmt.setInt(2, movie.getId());
+
+            stmt.executeUpdate();
+
+            movie.setPersonalRating(newRating);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        @Override
+    }
+
+
+    @Override
         public Movie deleteMovie(Movie movie) throws Exception {
 
             String sql = "DELETE FROM dbo.Movie WHERE Id = ?;";

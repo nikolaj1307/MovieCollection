@@ -55,6 +55,10 @@ public class MovieModel {
         System.out.println("MovieModel");
     }
 
+    public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
+        movieManager.updatePersonalRating(movie, newRating);
+    }
+
     public void searchMovie(String query) throws Exception {
         List<Movie> searchResult = movieManager.searchMovie(query);
         moviesToBeViewed.clear();

@@ -18,6 +18,5 @@ public class Main extends Application {
         primaryStage.setTitle("Movie Collection");
         primaryStage.setScene(scene);
         primaryStage.show();
-
     }
 }

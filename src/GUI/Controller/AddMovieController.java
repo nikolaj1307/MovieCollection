@@ -135,7 +135,7 @@ public class AddMovieController {
         mainController.addMovieToView(newMovie);
 
         // Update the playlist table in the main controller
-        mainController.updatePlaylistTable();
+        mainController.updateMovieTable();
 
         // Close the current stage
         Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();

@@ -33,7 +33,7 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
 
                 // Map DB row to Movie object
                 int id = rs.getInt("Id");
-                String name = rs.getString("Name");
+                String name = rs.getString("CatName");
 
                 Category category = new Category(id, name);
                 allCategories.add(category);

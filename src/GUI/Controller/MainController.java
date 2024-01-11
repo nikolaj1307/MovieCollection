@@ -66,17 +66,15 @@ public class MainController implements Initializable {
     private MFXLegacyComboBox<Movie> comBoxRating;
 
     @FXML
-    private MFXLegacyTableView<Movie> movieTblView;
+    public MFXLegacyTableView<Movie> movieTblView;
 
     @FXML
     private MFXTextField searchField;
-    private Exceptions exceptions;
 
+    private Exceptions exceptions;
 
     // Model instance for accessing movie data
     private MovieModel movieModel;
-
-
 
     // Constructor for initializing model instances
     public MainController() {
@@ -86,7 +84,6 @@ public class MainController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -99,23 +96,27 @@ public class MainController implements Initializable {
         // Set the table items from the observable list in the model
         movieTblView.setItems(movieModel.getObservableMovies());
         //SearchBar
-        searchField.textProperty().addListener(((observable, oldValue, newValue) ->{
+        searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
             try {
                 movieModel.searchMovie(newValue);
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }));
     }
 
-
-    // Method to update the playlist table
-    public void updatePlaylistTable() {
+    // Method to update the movie table
+    public void updateMovieTable() {
         movieTblView.refresh();
     }
 
+    //Clears the selected movie
+    public void clearSelection() {
+        movieTblView.getSelectionModel().clearSelection();
+    }
+
     @FXML
-    public void onClickAddMovie(ActionEvent event)  {
+    public void onClickAddMovie(ActionEvent event) {
         try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddMovieView.fxml"));
@@ -130,7 +131,7 @@ public class MainController implements Initializable {
             AddMovieController addMovieController = loader.getController();
             // Pass the reference to the main controller to allow communication between controllers
             addMovieController.setMainController(this);
-        }catch (IOException e){
+        } catch (IOException e) {
             exceptions.noAddMovie(e);
             e.printStackTrace();
         }
@@ -142,6 +143,7 @@ public class MainController implements Initializable {
         // Add the new movie to the table view
         movieTblView.getItems().add(movie);
     }
+
 
     public void onClickRemove(ActionEvent event) {
         Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
@@ -168,8 +170,29 @@ public class MainController implements Initializable {
         }
     }
 
-    public void onClickPersonalRating(ActionEvent event) {
+    public void onClickPersonalRating(ActionEvent event) throws IOException {
+        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
 
+        btnPersonalRating.setDisable(true);
+
+        if (selectedMovie != null) {
+            btnPersonalRating.setDisable(false);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PersonalRatingView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+
+            stage.setTitle("Personal rating");
+
+            PersonalRatingController personalRatingController = loader.getController();
+            personalRatingController.setMainController(this);
+
+            stage.show();
+
+        } else {
+            btnPersonalRating.setDisable(false);
+        }
     }
 
     private static Alert showDeleteAlert(String message) {
@@ -182,6 +205,7 @@ public class MainController implements Initializable {
         confirmationAlert.setGraphic(null); // Removes the questionmark
         return confirmationAlert;
     }
+
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

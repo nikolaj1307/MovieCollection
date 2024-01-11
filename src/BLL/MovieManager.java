@@ -35,6 +35,10 @@ public class MovieManager {
         System.out.println("MovieManager");
     }
 
+    public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
+        movieDAO.updatePersonalRating(movie, newRating);
+    }
+
     public List<Movie> searchMovie (String query) throws Exception {
         List<Movie> allMovies = getAllMovies();
         List<Movie> movieResult = movieSearcher.search(allMovies, query);

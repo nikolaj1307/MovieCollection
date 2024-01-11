@@ -9,7 +9,7 @@ public interface IMovieDataAccess {
 
     public Movie createMovie(Movie movie) throws Exception;
 
-    public void updateMovie(Movie movie) throws Exception;
+    public void updatePersonalRating(Movie movie, Double newRating) throws Exception;
 
     public Movie deleteMovie(Movie movie) throws Exception;
 }

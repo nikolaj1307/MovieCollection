@@ -15,7 +15,7 @@ public class Movie {
     private double personalRating;
 
 
-    public Movie(int id, String name, double rating, String fileLink, int lastView) {
+    public Movie(int id, String name, double rating, String fileLink, int lastView, double personalRating) {
         this.id = id;
         this.name = name;
         this.rating = rating;
@@ -32,9 +32,6 @@ public class Movie {
         //this.lastView = lastView;
         //this.personalRating = personalRating;
     }
-
-
-
 
     public int getId() {
 
@@ -86,7 +83,7 @@ public class Movie {
         this.lastView = lastView;
     }
 
-    public void setPersonalRating() {
+    public void setPersonalRating(Double personalRating) {
 
         this.personalRating = personalRating;
     }
