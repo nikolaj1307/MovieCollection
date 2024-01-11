@@ -34,7 +34,7 @@
                         <Font name="K2D Thin Italic" size="13.0" />
                     </font>
                 </Text>
-                <TextField fx:id="PersonalRatingField" promptText="Ex. 8,7">
+                <TextField fx:id="PersonalRatingField" promptText="Ex. 8.7">
                     <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </HBox.margin>
