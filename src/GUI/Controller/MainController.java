@@ -18,9 +18,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import javax.print.attribute.standard.Media;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -72,6 +75,8 @@ public class MainController implements Initializable {
 
     // Model instance for accessing movie data
     private MovieModel movieModel;
+
+
 
     // Constructor for initializing model instances
     public MainController() {
@@ -163,30 +168,8 @@ public class MainController implements Initializable {
         }
     }
 
-    public void onClickPersonalRating(ActionEvent event) throws IOException {
-        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+    public void onClickPersonalRating(ActionEvent event) {
 
-        btnPersonalRating.setDisable(true);
-
-        if (selectedMovie != null){
-            btnPersonalRating.setDisable(false);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PersonalRatingView.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-
-            stage.setTitle("Personal rating");
-
-            PersonalRatingController personalRatingController = loader.getController();
-            personalRatingController.setMainController(this);
-
-            stage.show();
-
-
-        } else {
-            btnPersonalRating.setDisable(false);
-        }
     }
 
     private static Alert showDeleteAlert(String message) {
@@ -205,6 +188,29 @@ public class MainController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void movieTblClick(MouseEvent mouseEvent) {
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
+            Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+            if (selectedMovie != null) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
+                    Parent root = loader.load();
+
+                    MediaViewController mediaViewController = loader.getController();
+                    mediaViewController.setSelectedMovie(selectedMovie);
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Add movie");
+                    stage.setResizable(false);
+                    stage.show();
+                } catch (IOException e) {
+                    //exceptions.noAddMovie(e);
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
 
