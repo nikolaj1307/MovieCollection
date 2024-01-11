@@ -2,7 +2,9 @@ package GUI.Controller;
 
 import BE.Category;
 import BE.Movie;
+import BE.TMDBMovie;
 import BLL.CategoryManager;
+import DAL.Rest.TMDBConnector;
 import GUI.Model.CategoryModel;
 import GUI.Model.MovieModel;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -13,8 +15,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.JSONException;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class AddMovieController {
@@ -44,6 +49,7 @@ public class AddMovieController {
     // Model instances for accessing data
     private CategoryModel categoryModel;
     private MovieModel movieModel;
+    private TMDBMovie tmdbMovie;
 
     private CategoryManager categoryManager;
 
@@ -79,7 +85,7 @@ public class AddMovieController {
 
 
     @FXML
-    public void onClickFileChooserBtn(ActionEvent event) {
+    public void onClickFileChooserBtn(ActionEvent event) throws JSONException, IOException, URISyntaxException, InterruptedException {
         // Open a new stage for the file chooser
         Stage stage = new Stage();
 
@@ -96,8 +102,19 @@ public class AddMovieController {
 
         // If a file is selected, set its name in the FilePathField
         if (file != null) {
-            MovieNameField.setText((file.getName()));
-            FilePathField.setText(file.getName());
+            //MovieNameField.setText((file.getName()));
+            String fileName = file.getName();
+            FilePathField.setText(fileName);
+
+            String movieName = fileName.substring(0, fileName.length()-4);
+            System.out.println(movieName);
+            TMDBConnector tmdbConnector = new TMDBConnector(movieName);
+            tmdbMovie = tmdbConnector.getMovieFound();
+
+            if(tmdbMovie != null) {
+                MovieNameField.setText(tmdbMovie.getOriginal_title());
+                System.out.println(tmdbMovie.getOriginal_title());
+            }
         }
     }
 
