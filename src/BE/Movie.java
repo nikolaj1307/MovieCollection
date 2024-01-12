@@ -1,5 +1,7 @@
 package BE;
 
+import java.util.Date;
+
 public class Movie {
 
     private int id;
@@ -10,12 +12,12 @@ public class Movie {
 
     private String fileLink;
 
-    private int lastView;
+    private Date lastView;
 
     private double personalRating;
 
 
-    public Movie(int id, String name, double rating, String fileLink, int lastView, double personalRating) {
+    public Movie(int id, String name, double rating, String fileLink, Date lastView, double personalRating) {
         this.id = id;
         this.name = name;
         this.rating = rating;
@@ -53,7 +55,7 @@ public class Movie {
         return fileLink;
     }
 
-    public int getLastView() {
+    public Date getLastView() {
 
         return lastView;
     }

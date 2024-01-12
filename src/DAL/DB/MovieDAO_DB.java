@@ -35,7 +35,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
                     String name = rs.getString("Name");
                     double rating = rs.getDouble("Rating");
                     String fileLink = rs.getString("FileLink");
-                    int lastView = rs.getInt("LastView");
+                    Date lastView = rs.getDate("LastView");
                     double personalRating = rs.getDouble("PersonalRating");
 
                     Movie movie = new Movie(id, name, rating, fileLink, lastView, personalRating);
