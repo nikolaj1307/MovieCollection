@@ -6,6 +6,7 @@ import BLL.Utility.MovieSearcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.Date;
 import java.util.List;
 
 public class MovieModel {
@@ -57,6 +58,10 @@ public class MovieModel {
 
     public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
         movieManager.updatePersonalRating(movie, newRating);
+    }
+
+    public void updateLastView(Movie movie, Date newDate) throws Exception {
+        movieManager.updateLastView(movie, newDate);
     }
 
     public void searchMovie(String query) throws Exception {

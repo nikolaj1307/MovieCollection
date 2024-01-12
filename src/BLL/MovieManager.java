@@ -7,6 +7,7 @@ import DAL.IMovieDataAccess;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class MovieManager {
@@ -37,6 +38,10 @@ public class MovieManager {
 
     public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
         movieDAO.updatePersonalRating(movie, newRating);
+    }
+
+    public void updateLastView(Movie movie, Date newDate) throws Exception {
+        movieDAO.updateLastView(movie, newDate);
     }
 
     public List<Movie> searchMovie (String query) throws Exception {

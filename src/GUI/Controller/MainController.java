@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javax.print.attribute.standard.Media;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -106,6 +107,7 @@ public class MainController implements Initializable {
                 throw new RuntimeException(e);
             }
         }));
+
     }
 
     // Method to update the movie table
@@ -198,11 +200,21 @@ public class MainController implements Initializable {
         }
     }
 
-    public void movieTblClick(MouseEvent mouseEvent) {
+    public void movieTblClick(MouseEvent mouseEvent) throws Exception {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
             Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
             if (selectedMovie != null) {
                 try {
+
+                    // Get the current date
+                    Date currentDate = new Date();
+
+                    // Update the last view and pass the current date
+                    movieModel.updateLastView(selectedMovie, currentDate);
+
+                    updateMovieTable();
+                    clearSelection();
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
                     Parent root = loader.load();
 
@@ -213,6 +225,7 @@ public class MainController implements Initializable {
                     stage.setTitle("Add movie");
                     stage.setResizable(false);
                     stage.show();
+
                 } catch (IOException e) {
                     //exceptions.noAddMovie(e);
                     e.printStackTrace();

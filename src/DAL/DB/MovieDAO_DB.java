@@ -104,6 +104,26 @@ public class MovieDAO_DB implements IMovieDataAccess {
 
     }
 
+    @Override
+    public void updateLastView(Movie movie, java.util.Date newDate) throws Exception {
+        String sql = "UPDATE dbo.movie SET LastView = ? WHERE [id] = ?;";
+
+        try (Connection conn = databaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            java.sql.Date sqlDate = new java.sql.Date(newDate.getTime());
+
+            stmt.setDate(1, sqlDate);
+            stmt.setInt(2, movie.getId());
+
+            stmt.executeUpdate();
+
+            movie.setLastView(sqlDate);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
         public Movie deleteMovie(Movie movie) throws Exception {
@@ -127,11 +147,6 @@ public class MovieDAO_DB implements IMovieDataAccess {
             }
             return movie;
         }
-
-
-
-
-
 }
 
 

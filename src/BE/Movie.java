@@ -80,7 +80,7 @@ public class Movie {
         this.fileLink = fileLink;
     }
 
-    public void setLastView() {
+    public void setLastView(Date lastView) {
 
         this.lastView = lastView;
     }
