@@ -3,6 +3,7 @@
 
 import BE.Movie;
 import GUI.Model.MovieModel;
+import GUI.Util.Alerts;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,15 +25,16 @@ import javafx.stage.Stage;
 
         private MainController mainController;
 
+
         // Model instances for accessing data
         private MovieModel movieModel;
-
+        private Alerts alerts;
 
         // Constructor for initializing model instances
         public PersonalRatingController() {
             try {
                 movieModel = new MovieModel();
-
+                alerts = new Alerts();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -50,12 +52,20 @@ import javafx.stage.Stage;
         }
 
         public void OnClickPersonalRatingSaveBtn(ActionEvent event) throws Exception {
-                 // Hust movieTblView er public, find ud af hvordan man kan access ved private.
-                Movie selectedMovie = mainController.movieTblView.getSelectionModel().getSelectedItem();
+            // Hust movieTblView er public, find ud af hvordan man kan access ved private.
+            Movie selectedMovie = mainController.movieTblView.getSelectionModel().getSelectedItem();
 
-                // HUSK.. at lave så der kommer fejl, hvis der ikke er indtastet en værdi og at værdien kun kan være fra 0-10
+            try {
+                // Validate the personal rating value
                 Double pRating = Double.valueOf(PersonalRatingField.getText());
 
+                if (pRating < 0 || pRating > 10) {
+                    // Display an alert if the value is outside the valid range
+                    alerts.showAlert("Error", "Personal rating must be between 0 and 10.");
+                    return; // Exit the method if there's an error
+                }
+
+                // Update personal rating if validation passes
                 movieModel.updatePersonalRating(selectedMovie, pRating);
 
                 mainController.updateMovieTable();
@@ -64,6 +74,11 @@ import javafx.stage.Stage;
                 // Close the window
                 Stage stage = (Stage) PersonalRatingSaveBtn.getScene().getWindow();
                 stage.close();
+
+            } catch (NumberFormatException e) {
+                // Handle the case where the user didn't enter a valid number
+                alerts.showAlert("Error", "Please enter a valid numeric value for personal rating.");
+            }
             }
 
         }

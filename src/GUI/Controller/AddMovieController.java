@@ -7,6 +7,7 @@ import BLL.CategoryManager;
 import DAL.Rest.TMDBConnector;
 import GUI.Model.CategoryModel;
 import GUI.Model.MovieModel;
+import GUI.Util.Alerts;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.event.ActionEvent;
@@ -53,6 +54,8 @@ public class AddMovieController {
 
     private CategoryManager categoryManager;
 
+    private Alerts alerts;
+
 
     // Constructor for initializing model instances
     public AddMovieController() {
@@ -60,6 +63,7 @@ public class AddMovieController {
             movieModel = new MovieModel();
             categoryModel = new CategoryModel();
             categoryManager = new CategoryManager();
+            alerts = new Alerts();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -120,28 +124,40 @@ public class AddMovieController {
 
     @FXML
     public void onClickAddMovieSaveBtn(ActionEvent event) throws Exception {
-        // Create a new movie using data from text fields
-        movieModel.createMovie(MovieNameField.getText(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
 
-        // Retrieve data from text fields
-        String name = MovieNameField.getText();
-        double rating = Double.parseDouble(ImdbRatingField.getText());
-        String fileLink = FilePathField.getText();
+        try {
+            // Create a new movie using data from text fields
+            movieModel.createMovie(MovieNameField.getText(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
 
-        // Create a new Movie object
-        Movie newMovie = new Movie(name, rating, fileLink);
+            // Retrieve data from text fields
+            String name = MovieNameField.getText();
+            double rating = Double.parseDouble(ImdbRatingField.getText());
+            String fileLink = FilePathField.getText();
 
-        // Add the new movie to the view in the main controller
-        mainController.addMovieToView(newMovie);
+            // Validate the rating value
+            if (rating < 0 || rating > 10) {
+                alerts.showAlert("Error", "Please enter a valid IMDb rating between 0 and 10.");
+                return; // Exit the method if there's an error
+            }
 
-        // Update the playlist table in the main controller
-        mainController.updateMovieTable();
+            // Create a new Movie object
+            Movie newMovie = new Movie(name, rating, fileLink);
 
-        // Close the current stage
-        Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();
-        stage.close();
+            // Add the new movie to the view in the main controller
+            mainController.addMovieToView(newMovie);
+
+            // Update the playlist table in the main controller
+            mainController.updateMovieTable();
+            mainController.clearSelection();
+
+            // Close the current stage
+            Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();
+            stage.close();
+        } catch (NumberFormatException e) {
+            // Handle the case where the user didn't enter a valid number for IMDb rating
+            alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating.");
+        }
     }
-
 
     public void onClickCategoryBox(MouseEvent event) {
     }

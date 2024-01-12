@@ -3,6 +3,7 @@ package GUI.Controller;
 import GUI.Model.MovieModel;
 import BE.Category;
 import BE.Movie;
+import GUI.Util.Alerts;
 import GUI.Util.Exceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
@@ -75,11 +76,13 @@ public class MainController implements Initializable {
 
     // Model instance for accessing movie data
     private MovieModel movieModel;
+    private Alerts alerts;
 
     // Constructor for initializing model instances
     public MainController() {
         try {
             movieModel = new MovieModel();
+            alerts = new Alerts();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -151,21 +154,21 @@ public class MainController implements Initializable {
 
             String alertMessage = "Are you sure you want to delete '" +
                     selectedMovie.getName() + "'?";
-            Alert confirmationAlert = showDeleteAlert(alertMessage);
+            Alert confirmationAlert = alerts.showDeleteAlert(alertMessage);
 
             Optional<ButtonType> result = confirmationAlert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 try {
                     movieModel.deleteMovie(selectedMovie);
                     movieModel.getObservableMovies().remove(selectedMovie);
-                    System.out.println("MainController");
+                    clearSelection();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         } else {
             if (selectedMovie == null) {
-                showAlert("No movie selected", "Please select a movie for deletion");
+                alerts.showAlert("No movie selected", "Please select a movie for deletion");
             }
         }
     }
@@ -193,25 +196,6 @@ public class MainController implements Initializable {
         } else {
             btnPersonalRating.setDisable(false);
         }
-    }
-
-    private static Alert showDeleteAlert(String message) {
-        Alert confirmationAlert = new Alert(Alert.AlertType.NONE, //Use NONE inorder to get rid of the standard icon
-                message,
-                ButtonType.YES, ButtonType.NO);
-
-        confirmationAlert.setAlertType(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setHeaderText(null); //inorder to make it more simple
-        confirmationAlert.setGraphic(null); // Removes the questionmark
-        return confirmationAlert;
-    }
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 
     public void movieTblClick(MouseEvent mouseEvent) {
