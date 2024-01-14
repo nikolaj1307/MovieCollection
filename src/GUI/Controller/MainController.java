@@ -75,6 +75,9 @@ public class MainController implements Initializable {
     @FXML
     private MFXTextField searchField;
 
+    MediaPlayerHelper mediaPlayerHelper;
+    MediaViewController mediaViewController;
+
     private Exceptions exceptions;
 
     // Model instance for accessing movie data
@@ -217,14 +220,18 @@ public class MainController implements Initializable {
                     updateMovieTable();
                     clearSelection();
 
-                    String mediaFilePath = "Data/Movies/" + selectedMovie.getFileLink();
-                    Media media = new Media(new File(mediaFilePath).toURI().toString());
+
+
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
                     Parent root = loader.load();
 
+                    String mediaFilePath = "Data/Movies/" + selectedMovie.getFileLink();
+                    Media media = new Media(new File(mediaFilePath).toURI().toString());
+
                     MediaViewController mediaViewController = loader.getController();
                     mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
+                    mediaViewController.setSelectedMovie(selectedMovie, null);
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.setTitle("Add movie");

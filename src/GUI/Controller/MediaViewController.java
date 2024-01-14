@@ -57,7 +57,7 @@ public class MediaViewController implements Initializable {
 
     // Tilføj yderligere initialisering eller metoder, hvis det er nødvendigt
 
-    /*public void setSelectedMovie(Movie movie) {
+    public void setSelectedMovie(Movie movie, MediaPlayer existingMediaPlayer) {
         if (mediaPlayerHelper != null && mediaView != null) {
             String videoFileName = movie.getFileLink();
             String videoFilePath = "Data/Movies/" + videoFileName;
@@ -66,23 +66,20 @@ public class MediaViewController implements Initializable {
             URI uri = file.toURI();
 
             Media media = new Media(uri.toString());
-            //media.setOnError(this::handleMediaError);
 
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            //mediaPlayer.setOnError(this::handleMediaPlayerError);
+            MediaPlayer mediaPlayer;
 
-            mediaView.setMediaPlayer(new MediaPlayer(mediaPlayer));
+            if (existingMediaPlayer != null) {
+                mediaPlayer = existingMediaPlayer;
+                mediaPlayer.stop(); // Stop den eksisterende MediaPlayer, hvis den kører
+            } else {
+                mediaPlayer = new MediaPlayer(media);
+            }
+
+            mediaView.setMediaPlayer(mediaPlayer);
 
             mediaPlayerHelper.setMediaPlayer(mediaPlayer);
         }
-    }*/
-
-    private void handleMediaPlayerError(MediaErrorEvent errorEvent) {
-        System.out.println("MediaPlayer error: " + errorEvent);
-    }
-
-    private void handleMediaError(MediaErrorEvent errorEvent) {
-        System.out.println("Media error: " + errorEvent);
     }
 
 
