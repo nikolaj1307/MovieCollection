@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import GUI.MediaPlayerHelper;
 import GUI.Model.MovieModel;
 import BE.Category;
 import BE.Movie;
@@ -22,9 +23,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
-import javax.print.attribute.standard.Media;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -215,11 +217,14 @@ public class MainController implements Initializable {
                     updateMovieTable();
                     clearSelection();
 
+                    String mediaFilePath = "Data/Movies/" + selectedMovie.getFileLink();
+                    Media media = new Media(new File(mediaFilePath).toURI().toString());
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
                     Parent root = loader.load();
 
                     MediaViewController mediaViewController = loader.getController();
-                    mediaViewController.setSelectedMovie(selectedMovie);
+                    mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.setTitle("Add movie");
