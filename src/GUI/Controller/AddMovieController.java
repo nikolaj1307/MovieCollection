@@ -4,6 +4,7 @@ import BE.Category;
 import BE.Movie;
 import BE.TMDBMovie;
 import BLL.CategoryManager;
+import DAL.DB.CategoryDAO_DB;
 import DAL.Rest.TMDBConnector;
 import GUI.Model.CategoryModel;
 import GUI.Model.MovieModel;
@@ -55,6 +56,9 @@ public class AddMovieController {
     private CategoryManager categoryManager;
 
     private Alerts alerts;
+
+    private CategoryDAO_DB categoryDAO_db;
+
 
 
     // Constructor for initializing model instances
@@ -127,12 +131,15 @@ public class AddMovieController {
 
         try {
             // Create a new movie using data from text fields
-            movieModel.createMovie(MovieNameField.getText(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
+            movieModel.createMovie(MovieNameField.getText(), categoryBox.getValue(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
 
             // Retrieve data from text fields
             String name = MovieNameField.getText();
             double rating = Double.parseDouble(ImdbRatingField.getText());
             String fileLink = FilePathField.getText();
+            String category = categoryBox.getValue();
+
+
 
             // Validate the rating value
             if (rating < 0 || rating > 10) {
@@ -141,7 +148,7 @@ public class AddMovieController {
             }
 
             // Create a new Movie object
-            Movie newMovie = new Movie(name, rating, fileLink);
+            Movie newMovie = new Movie(name, category, rating, fileLink);
 
             // Add the new movie to the view in the main controller
             mainController.addMovieToView(newMovie);
@@ -159,7 +166,8 @@ public class AddMovieController {
         }
     }
 
-    public void onClickCategoryBox(MouseEvent event) {
+    public void onClickCategoryBox(ActionEvent event) throws Exception {
+        System.out.println("Category selected " + categoryBox.getValue());
     }
 
     public void loadCategories() {
@@ -167,7 +175,7 @@ public class AddMovieController {
             List<Category> allCategories = categoryManager.getAllCategories();
             categoryBox.getItems().clear();
             for (Category category : allCategories) {
-                categoryBox.getItems().add(category.getName());
+                categoryBox.getItems().add(category.getCatName());
             }
         } catch (Exception e) {
             e.printStackTrace();

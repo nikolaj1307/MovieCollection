@@ -98,6 +98,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Configure table columns with PropertyValueFactory
         colName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        colCategory.setCellValueFactory(new PropertyValueFactory<>("CatName"));
         colImdb.setCellValueFactory(new PropertyValueFactory<>("Rating"));
         colPersonalRating.setCellValueFactory(new PropertyValueFactory<>("PersonalRating"));
         colViewHistory.setCellValueFactory(new PropertyValueFactory<>("LastView"));

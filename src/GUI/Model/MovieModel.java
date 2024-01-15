@@ -37,9 +37,9 @@ public class MovieModel {
     }
 
     // Method to create a new movie and add it to the manager and observable list
-    public void createMovie(String name, double rating, String fileLink) throws Exception {
+    public void createMovie(String name, String catName, double rating, String fileLink) throws Exception {
         // Create a new Movie object
-        Movie movie = new Movie(name, rating, fileLink);
+        Movie movie = new Movie(name, catName, rating, fileLink);
 
         // Add the movie to the manager
         movieManager.createMovie(movie);

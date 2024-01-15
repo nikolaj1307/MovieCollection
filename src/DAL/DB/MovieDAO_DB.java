@@ -1,5 +1,6 @@
 package DAL.DB;
 
+import BE.Category;
 import BE.Movie;
 import DAL.IMovieDataAccess;
 
@@ -24,7 +25,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
             try (Connection conn = databaseConnector.getConnection();
                  Statement stmt = conn.createStatement())
             {
-                String sql = "SELECT * FROM dbo.Movie";
+                String sql = "SELECT " +
+                "m.*, " +
+                        "STRING_AGG(c.CatName, ', ') AS Categories " +
+                "from Movie m " +
+                "JOIN CatMovie cm ON m.Id = cm.MovieID " +
+                "JOIN Category c ON cm.CategoryId = c.Id " +
+                "GROUP BY m.Id, m.Name, m.FileLink, m.LastView, m.PersonalRating, m.Rating;";
                 ResultSet rs = stmt.executeQuery(sql);
 
                 // Loop through rows from the database result set
@@ -33,12 +40,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
                     // Map DB row to Movie object
                     int id = rs.getInt("Id");
                     String name = rs.getString("Name");
+                    String catName = rs.getString("Categories");
                     double rating = rs.getDouble("Rating");
                     String fileLink = rs.getString("FileLink");
                     Date lastView = rs.getDate("LastView");
                     double personalRating = rs.getDouble("PersonalRating");
 
-                    Movie movie = new Movie(id, name, rating, fileLink, lastView, personalRating);
+                    Movie movie = new Movie(id, name, catName, rating, fileLink, lastView, personalRating);
                     allMovies.add(movie);
                 }
                 return allMovies;
@@ -52,9 +60,8 @@ public class MovieDAO_DB implements IMovieDataAccess {
         @Override
         public Movie createMovie(Movie movie) throws Exception {
 
-            String sql =
-
-            "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?,?,?);";
+        String sql =
+                "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?, ?, ?);";
 
             try (Connection conn = databaseConnector.getConnection()) {
                 PreparedStatement stmt = conn.prepareStatement(sql,
@@ -129,6 +136,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
         public Movie deleteMovie(Movie movie) throws Exception {
 
             String sql = "DELETE FROM dbo.Movie WHERE Id = ?;";
+
 
             try (Connection conn = databaseConnector.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql))

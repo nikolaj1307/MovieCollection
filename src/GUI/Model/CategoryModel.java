@@ -18,8 +18,8 @@ public class CategoryModel {
     private CategoryDAO_DB categoryDAO;
 
     public CategoryModel() throws Exception {
-        categoryDAO = new CategoryDAO_DB();
         categoryManager = new CategoryManager();
+
     }
 
 }

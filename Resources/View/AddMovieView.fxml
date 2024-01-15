@@ -83,7 +83,7 @@
                   <Font name="K2D Thin Italic" size="13.0" />
                </font>
             </Text>
-            <MFXComboBox fx:id="categoryBox" floatMode="ABOVE" onAction="#onClickCategoryBox" onMouseClicked="#onClickCategoryBox" text="Select">
+            <MFXComboBox fx:id="categoryBox" floatMode="ABOVE" onAction="#onClickCategoryBox" text="Select">
                <HBox.margin>
                   <Insets top="5.0" />
                </HBox.margin>

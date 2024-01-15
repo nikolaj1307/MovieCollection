@@ -1,7 +1,9 @@
 package BLL;
 
+import BE.Category;
 import BE.Movie;
 import BLL.Utility.MovieSearcher;
+import DAL.DB.CategoryDAO_DB;
 import DAL.DB.MovieDAO_DB;
 import DAL.IMovieDataAccess;
 import javafx.collections.ObservableList;
@@ -15,6 +17,8 @@ public class MovieManager {
     // Data access object for handling movie-related database operations
     private IMovieDataAccess movieDAO;
 
+    private CategoryDAO_DB categoryDAO_db;
+
     private MovieSearcher movieSearcher = new MovieSearcher();
     // Constructor initializes the movieDAO with a concrete implementation (MovieDAO_DB)
     public MovieManager() throws IOException {
@@ -27,8 +31,8 @@ public class MovieManager {
     }
 
     // Create a new movie and add it to the data access layer
-    public void createMovie(Movie movie) throws Exception {
-        movieDAO.createMovie(movie);
+    public Movie createMovie(Movie newMovie) throws Exception {
+        return movieDAO.createMovie(newMovie);
     }
 
     public void deleteMovie(Movie movie) throws Exception {

@@ -1,7 +1,6 @@
 package DAL.DB;
 
 import BE.Category;
-import BE.Movie;
 import DAL.ICategoryDataAccess;
 
 import java.io.IOException;
@@ -31,15 +30,66 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
             // Loop through rows from the database result set
             while (rs.next()) {
 
-                // Map DB row to Movie object
+                // Map DB row to Category object
                 int id = rs.getInt("Id");
-                String name = rs.getString("CatName");
+                String catname = rs.getString("CatName");
 
-                Category category = new Category(id, name);
+                Category category = new Category(id, catname);
                 allCategories.add(category);
-                System.out.println("Category = " + category.getName());
+                System.out.println("Category = " + category.getCatName());
             }
             return allCategories;
+        }
+    }
+
+    public Category insertCatToCatMovie(Category category) throws Exception {
+
+        // SQL command
+        String sql = "INSERT INTO CatMovie  VALUES (?);";
+
+        try (Connection conn = databaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
+        {
+            // Bind parameters
+            stmt.setString(1, category.getCatName());
+
+            // Run the specified SQL statement
+            stmt.executeUpdate();
+
+            // Get the generated ID from the DB
+            ResultSet rs = stmt.getGeneratedKeys();
+            int id = 0;
+
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+            return new Category(id, category.getCatName() );
+        }
+        catch (SQLException ex)
+        {
+            // create entry in log file
+            ex.printStackTrace();
+            throw new Exception("Could not insert category", ex);
+        }
+    }
+
+    public int getCatId(String catName) throws Exception {
+        try (Connection conn = databaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("SELECT GenreID FROM Genre WHERE GenreType = ?")) {
+
+            // Set parameters for the PreparedStatement
+            stmt.setString(1, catName);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt("Id");
+
+            }
+            return -1;
+        } catch (SQLException e) {
+            throw new Exception("Error getting Category ID", e);
         }
     }
 

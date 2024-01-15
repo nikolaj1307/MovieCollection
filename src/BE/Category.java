@@ -1,28 +1,32 @@
 package BE;
 
-import javafx.scene.control.MenuItem;
-
 public class Category {
 
-    private int id;
-    private String name;
+    private int catId;
 
-    public Category(int id, String name) {
-        this.id = id;
-        this.name = name;
+    private String catName;
+
+
+    public Category(int catId, String catName) {
+        this.catId = catId;
+        this.catName = catName;
     }
 
-    public int getId() {
-        return id;
+    public Category(String catName) {
+        this.catName = catName;
     }
 
-    public String getName() {
+    public String getCatName() {
 
-        return name;
+        return catName;
     }
 
-    public void setName() {
-
-        this.name = this.name;
+    public int getCatId() {
+        return catId;
     }
+
+    public void setCatId(int catId) {
+        this.catId = catId;
+    }
+
 }

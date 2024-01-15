@@ -16,10 +16,12 @@ public class Movie {
 
     private double personalRating;
 
+    private String catName;
 
-    public Movie(int id, String name, double rating, String fileLink, Date lastView, double personalRating) {
+    public Movie(int id, String name, String catName, double rating, String fileLink, Date lastView, double personalRating) {
         this.id = id;
         this.name = name;
+        this.catName = catName;
         this.rating = rating;
         this.fileLink = fileLink;
         this.lastView = lastView;
@@ -33,6 +35,13 @@ public class Movie {
         this.fileLink = fileLink;
         //this.lastView = lastView;
         //this.personalRating = personalRating;
+    }
+
+    public Movie(String name, String catName, double rating, String fileLink) {
+        this.name = name;
+        this.catName = catName;
+        this.rating = rating;
+        this.fileLink = fileLink;
     }
 
     public int getId() {
@@ -63,6 +72,10 @@ public class Movie {
     public double getPersonalRating() {
 
         return personalRating;
+    }
+
+    public String getCatName() {
+        return catName;
     }
 
     public void setName() {
