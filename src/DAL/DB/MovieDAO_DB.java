@@ -60,8 +60,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
         @Override
         public Movie createMovie(Movie movie) throws Exception {
 
-        String sql =
-                "INSERT INTO dbo.Movie (Name, Rating, FileLink) VALUES (?, ?, ?);";
+            String sql =
+                    "INSERT INTO dbo.Movie (Name, Rating, FileLink) " +
+                            "VALUES (?,?,?); " +
+                            "DECLARE @Id INT; " +
+                            "SET @Id = SCOPE_IDENTITY(); " +
+                            "INSERT INTO dbo.CatMovie (CategoryId, MovieId) " +
+                            "VALUES ((SELECT Id FROM dbo.Category WHERE CatName = ?), @Id);";
 
             try (Connection conn = databaseConnector.getConnection()) {
                 PreparedStatement stmt = conn.prepareStatement(sql,
@@ -71,6 +76,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
                 stmt.setString(1, movie.getName());
                 stmt.setDouble(2, movie.getRating());
                 stmt.setString(3, movie.getFileLink());
+                stmt.setString(4, movie.getCatName());
 
                 // Run the specified SQL statement
                 stmt.executeUpdate();
@@ -135,7 +141,9 @@ public class MovieDAO_DB implements IMovieDataAccess {
     @Override
         public Movie deleteMovie(Movie movie) throws Exception {
 
-            String sql = "DELETE FROM dbo.Movie WHERE Id = ?;";
+        String sql =
+                "DElETE FROM dbo.CatMovie WHERE MovieId = ? " +
+                        "DELETE FROM dbo.Movie WHERE Id = ?";
 
 
             try (Connection conn = databaseConnector.getConnection();
@@ -143,6 +151,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
             {
                 // Bind parameters
                 stmt.setInt(1, movie.getId());
+                stmt.setInt(2, movie.getId());
 
                 stmt.executeUpdate();
                 // Run the specified SQL statement
