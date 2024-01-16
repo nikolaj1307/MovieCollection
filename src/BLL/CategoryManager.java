@@ -12,6 +12,9 @@ public class CategoryManager {
 
     private ICategoryDataAccess categoryDAO;
 
+    private boolean categoriesLoaded = false;
+
+    private List<Category> allCategories;
 
     public CategoryManager() throws IOException {
         categoryDAO = new CategoryDAO_DB();

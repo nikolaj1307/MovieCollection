@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BLL.CategoryManager;
 import GUI.MediaPlayerHelper;
 import GUI.Model.MovieModel;
 import BE.Category;
@@ -26,10 +27,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -64,7 +67,7 @@ public class MainController implements Initializable {
     private TableColumn<Movie, Integer> colViewHistory;
 
     @FXML
-    private MFXLegacyComboBox<Category> comBoxCategory;
+    private MFXLegacyComboBox<String> comBoxCategory;
 
     @FXML
     private MFXLegacyComboBox<Movie> comBoxRating;
@@ -84,9 +87,12 @@ public class MainController implements Initializable {
     private MovieModel movieModel;
     private Alerts alerts;
 
+    private CategoryManager categoryManager;
+
     // Constructor for initializing model instances
     public MainController() {
         try {
+            categoryManager = new CategoryManager();
             movieModel = new MovieModel();
             alerts = new Alerts();
         } catch (Exception e) {
@@ -244,6 +250,25 @@ public class MainController implements Initializable {
             }
         }
     }
+
+    public void onClickCatFilterBox(ActionEvent event) throws Exception {
+        categoryManager.getAllCategories();
+    }
+
+
+    public void loadCategories() {
+        try {
+            List<Category> allCategories = categoryManager.getAllCategories();
+            comBoxCategory.getItems().clear();
+            for (Category category : allCategories) {
+                comBoxCategory.getItems().add(category.getCatName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 
 
