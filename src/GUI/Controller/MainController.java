@@ -109,6 +109,8 @@ public class MainController implements Initializable {
         colPersonalRating.setCellValueFactory(new PropertyValueFactory<>("PersonalRating"));
         colViewHistory.setCellValueFactory(new PropertyValueFactory<>("LastView"));
 
+        loadCategories();
+
         // Set the table items from the observable list in the model
         movieTblView.setItems(movieModel.getObservableMovies());
         //SearchBar
