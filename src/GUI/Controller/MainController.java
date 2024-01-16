@@ -222,8 +222,6 @@ public class MainController implements Initializable {
                     clearSelection();
 
 
-
-
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
                     Parent root = loader.load();
 

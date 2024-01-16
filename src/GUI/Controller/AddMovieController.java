@@ -22,6 +22,10 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class AddMovieController {
@@ -110,6 +114,7 @@ public class AddMovieController {
 
         // If a file is selected, set its name in the FilePathField
         if (file != null) {
+            copyFileToDataFolder(file);
             //MovieNameField.setText((file.getName()));
             String fileName = file.getName();
             FilePathField.setText(fileName);
@@ -177,6 +182,15 @@ public class AddMovieController {
             for (Category category : allCategories) {
                 categoryBox.getItems().add(category.getCatName());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void copyFileToDataFolder(File sourceFile) {
+        try {
+            Path destinationPath = Paths.get("Data/Movies", sourceFile.getName());
+            Files.copy(sourceFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
