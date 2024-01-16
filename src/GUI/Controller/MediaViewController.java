@@ -4,6 +4,7 @@ package GUI.Controller;
 
 import BE.Movie;
 import GUI.MediaPlayerHelper;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,11 +26,11 @@ public class MediaViewController implements Initializable {
     @FXML
     public MediaView mediaView;
     @FXML
-    private Button btnPlay;
+    private MFXButton btnPause;
+
     @FXML
-    private Button btnPause;
-    @FXML
-    private BorderPane borderPane;
+    private MFXButton btnPlay;
+
     MediaPlayer mediaPlayer;
     private MediaPlayerHelper mediaPlayerHelper;
 

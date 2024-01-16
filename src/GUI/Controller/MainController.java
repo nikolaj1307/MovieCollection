@@ -11,6 +11,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyTableView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -123,6 +125,23 @@ public class MainController implements Initializable {
             }
         }));
 
+        //Delays the method
+        Platform.runLater(this::movieExpiring);
+    }
+
+    public void movieExpiring() {
+        LocalDate twoYearsAgo = LocalDate.now().minusYears(2);
+
+        for (Movie movie : movieModel.getObservableMovies()) {
+            if (movie.getLastView() != null) {
+                // Convert java.sql.Date to LocalDate
+                LocalDate lastViewDate = new java.sql.Date(movie.getLastView().getTime()).toLocalDate();
+
+                if (lastViewDate.isBefore(twoYearsAgo) && (movie.getPersonalRating() < 6)) {
+                    alerts.showExpiringMovieAlert(movie);
+                }
+            }
+        }
     }
 
     // Method to update the movie table
@@ -251,10 +270,10 @@ public class MainController implements Initializable {
                     MediaViewController mediaViewController = loader.getController();
                     mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
                     mediaViewController.setSelectedMovie(selectedMovie);
+
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
-                    stage.setTitle("Add movie");
-                    stage.setResizable(false);
+                    stage.setTitle("Media player");
                     stage.show();
 
                 } catch (IOException e) {

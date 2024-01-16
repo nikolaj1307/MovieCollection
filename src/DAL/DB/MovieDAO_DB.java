@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class MovieDAO_DB implements IMovieDataAccess {
 
@@ -119,12 +120,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
     }
 
     @Override
-    public void updateLastView(Movie movie, java.util.Date newDate) throws Exception {
+    public void updateLastView(Movie movie, Date newDate) throws Exception {
         String sql = "UPDATE dbo.movie SET LastView = ? WHERE [id] = ?;";
 
         try (Connection conn = databaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
+            //Converts java.util.Date to java.sql.Date - Because .setDate can't take a java.util.Date
             java.sql.Date sqlDate = new java.sql.Date(newDate.getTime());
 
             stmt.setDate(1, sqlDate);
