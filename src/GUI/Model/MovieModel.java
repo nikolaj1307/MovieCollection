@@ -6,6 +6,7 @@ import BLL.Utility.MovieSearcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +69,19 @@ public class MovieModel {
         List<Movie> searchResult = movieManager.searchMovie(query);
         moviesToBeViewed.clear();
         moviesToBeViewed.addAll(searchResult);
+    }
+
+    public List<Movie> getMoviesByCategory(String selectedCategory) {
+        List<Movie> moviesByCategory = new ArrayList<>();
+        // Iterate over the observable list of movies
+        for(Movie movie : moviesToBeViewed) {
+            // Adjust this condition based on your actual data model
+            if(selectedCategory.equals(movie.getCatName())) {
+                // Add the movie to the list if it belongs to the specified category
+                moviesByCategory.add(movie);
+            }
+        }
+        return moviesByCategory;
     }
 }
 

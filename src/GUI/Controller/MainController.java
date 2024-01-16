@@ -11,6 +11,7 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyTableView;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -165,18 +166,29 @@ public class MainController implements Initializable {
 
 
     public void onClickRemove(ActionEvent event) {
+        // Get the currently selected movie from the TableView
         Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+        // Check if a movie is selected
         if (selectedMovie != null) {
 
+            // Create an alert message asking for confirmation to delete the selected movie
             String alertMessage = "Are you sure you want to delete '" +
                     selectedMovie.getName() + "'?";
+
+            // Show a confirmation alert dialog with the specified message
             Alert confirmationAlert = alerts.showDeleteAlert(alertMessage);
 
+            // Wait for the user's response in the dialog
             Optional<ButtonType> result = confirmationAlert.showAndWait();
+            // Check if the user clicked 'Yes' in the confirmation dialog
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 try {
+                    // Delete the selected movie from the model and data layer
                     movieModel.deleteMovie(selectedMovie);
+                    // Remove the selected movie from the observable list in the model
                     movieModel.getObservableMovies().remove(selectedMovie);
+
+                    // Clear the selection in the TableView
                     clearSelection();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -254,14 +266,35 @@ public class MainController implements Initializable {
     }
 
     public void onClickCatFilterBox(ActionEvent event) throws Exception {
-        categoryManager.getAllCategories();
+        // Get the selected category from the ComboBox
+        String selectedCategory = comBoxCategory.getValue();
+        // Check if a category is selected
+        if(selectedCategory != null && !selectedCategory.isEmpty()) {
+            try {
+                // Fetch movies based on the selected category
+                List<Movie> moviesByCategory = movieModel.getMoviesByCategory(selectedCategory);
+
+                // Update the TableView with the filtered movies
+                movieTblView.setItems(FXCollections.observableArrayList(moviesByCategory));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            // If no category is selected, show all movies
+            movieTblView.setItems(movieModel.getObservableMovies());
+
+        }
     }
 
 
     public void loadCategories() {
         try {
+            // Retrieve all categories from the CategoryManager
             List<Category> allCategories = categoryManager.getAllCategories();
+            // Clear the existing items in the comBoxCategory (ComboBox)
             comBoxCategory.getItems().clear();
+            // Iterate through the list of categories and add their names to the comBoxCategory
             for (Category category : allCategories) {
                 comBoxCategory.getItems().add(category.getCatName());
             }

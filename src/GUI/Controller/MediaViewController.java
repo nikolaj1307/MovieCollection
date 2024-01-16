@@ -101,5 +101,4 @@ public class MediaViewController implements Initializable {
             e.printStackTrace();
         }
     }
-
 }

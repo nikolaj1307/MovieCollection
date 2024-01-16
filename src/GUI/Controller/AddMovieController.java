@@ -106,6 +106,8 @@ public class AddMovieController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.setInitialDirectory(new File("Data/Movies"));
+
+        // Allow users to select only video files with specified extensions
         fileChooser.getExtensionFilters().addAll(
                 // Determine which file extensions are allowed while inserting a file.
                 new FileChooser.ExtensionFilter("Video files", "*.mp4", "*.mpeg4"));
@@ -115,16 +117,22 @@ public class AddMovieController {
 
         // If a file is selected, set its name in the FilePathField
         if (file != null) {
+            // Copy the selected file to the data folder
             copyFileToDataFolder(file);
-            //MovieNameField.setText((file.getName()));
+
+            // Set the file name in the FilePathField
             String fileName = file.getName();
             FilePathField.setText(fileName);
 
+            // Extract movie name from the file name (excluding extension)
             String movieName = fileName.substring(0, fileName.length()-4);
             System.out.println(movieName);
+
+            // Use TMDBConnector to fetch additional movie details from TMDB API
             TMDBConnector tmdbConnector = new TMDBConnector(movieName);
             tmdbMovie = tmdbConnector.getMovieFound();
 
+            //Update UI with drama from TMDB
             if(tmdbMovie != null) {
                 MovieNameField.setText(tmdbMovie.getOriginal_title());
                 System.out.println(tmdbMovie.getOriginal_title());
@@ -179,7 +187,10 @@ public class AddMovieController {
 
     public void loadCategories() {
         try {
+            // Retrieve all categories from the CategoryManager
             List<Category> allCategories = categoryManager.getAllCategories();
+
+            // Clear the existing items in the categoryBox (ComboBox)
             categoryBox.getItems().clear();
             for (Category category : allCategories) {
                 categoryBox.getItems().add(category.getCatName());
@@ -191,7 +202,9 @@ public class AddMovieController {
 
     private void copyFileToDataFolder(File sourceFile) {
         try {
+            // Create a Path for the destination file in the "Data/Movies" directory
             Path destinationPath = Paths.get("Data/Movies", sourceFile.getName());
+            // Copy the source file to the destination path, replacing it if it already exists
             Files.copy(sourceFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
