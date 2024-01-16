@@ -232,7 +232,7 @@ public class MainController implements Initializable {
 
                     MediaViewController mediaViewController = loader.getController();
                     mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
-                    mediaViewController.setSelectedMovie(selectedMovie, null);
+                    mediaViewController.setSelectedMovie(selectedMovie);
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
                     stage.setTitle("Add movie");

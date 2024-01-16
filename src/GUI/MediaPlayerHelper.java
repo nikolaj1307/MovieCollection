@@ -3,11 +3,15 @@ package GUI;
 
 // Importer de nødvendige klasser
 
+import BE.Movie;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class MediaPlayerHelper {
+import java.io.File;
+import java.net.URI;
 
+public class MediaPlayerHelper {
+    private Movie movie;
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
 
@@ -17,7 +21,12 @@ public class MediaPlayerHelper {
     }
 
     private void configureMediaPlayer() {
-        // Konfigurer mediaPlayer efter behov
+        mediaPlayer.setOnError(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Media error: " + mediaPlayer.getError());
+            }
+        });
     }
 
     public void playMovie() {
@@ -34,10 +43,14 @@ public class MediaPlayerHelper {
         }
     }
 
-    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+    private void stopCurrentMedia() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            isPlaying = false;
+        }
     }
 
-
-
-    // Add additional methods if needed
+    public void setMediaPlayer(MediaPlayer mediaPlayer) {
+        this.mediaPlayer = mediaPlayer;
+    }
 }

@@ -4,6 +4,7 @@ package GUI.Controller;
 
 import BE.Movie;
 import GUI.MediaPlayerHelper;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +30,7 @@ public class MediaViewController implements Initializable {
     private Button btnPause;
     @FXML
     private BorderPane borderPane;
-
+    MediaPlayer mediaPlayer;
     private MediaPlayerHelper mediaPlayerHelper;
 
     public void setMediaPlayerHelper(MediaPlayerHelper mediaPlayerHelper) {
@@ -38,9 +39,11 @@ public class MediaViewController implements Initializable {
 
     @FXML
     public void handlePlay(ActionEvent event) {
-        if (mediaPlayerHelper != null) {
-            mediaPlayerHelper.playMovie();
-        }
+        Platform.runLater(() -> {
+            if (mediaPlayerHelper != null) {
+                mediaPlayerHelper.playMovie();
+            }
+        });
     }
 
     @FXML
@@ -55,32 +58,48 @@ public class MediaViewController implements Initializable {
 
     }
 
-    // Tilføj yderligere initialisering eller metoder, hvis det er nødvendigt
+    public void setSelectedMovie(Movie movie) {
+        try {
+            // Check if MediaPlayerHelper and MediaView are initialized
+            if (mediaPlayerHelper != null && mediaView != null) {
+                // Get the file information for the selected movie
+                String videoFileName = movie.getFileLink();
+                String videoFilePath = "Data/Movies/" + videoFileName;
+                System.out.println("video: " + videoFileName);
 
-    public void setSelectedMovie(Movie movie, MediaPlayer existingMediaPlayer) {
-        if (mediaPlayerHelper != null && mediaView != null) {
-            String videoFileName = movie.getFileLink();
-            String videoFilePath = "Data/Movies/" + videoFileName;
+                // Create a File object from the file path
+                File file = new File(videoFilePath);
+                // Convert the file to a URI
+                URI uri = file.toURI();
+                System.out.println("Media URI: " + uri.toString());
 
-            File file = new File(videoFilePath);
-            URI uri = file.toURI();
+                //virker ikke endnu...
+                if (mediaPlayer != null) {
+                    mediaPlayer.stop();
+                    mediaPlayer.dispose();
+                    mediaPlayer = null;
+                }
+                // Create a new Media object from the URI
+                Media media = new Media(uri.toString());
 
-            Media media = new Media(uri.toString());
-
-            MediaPlayer mediaPlayer;
-
-            if (existingMediaPlayer != null) {
-                mediaPlayer = existingMediaPlayer;
-                mediaPlayer.stop(); // Stop den eksisterende MediaPlayer, hvis den kører
-            } else {
+                //Create a new MediaPlayer instance for the selected media
                 mediaPlayer = new MediaPlayer(media);
+                /*mediaPlayer.setOnError(() -> {
+                    System.out.println("Media Error: " + mediaPlayer.getError());
+                });*/
+
+                // Set the MediaPlayer for the MediaView
+                //mediaView.setMediaPlayer(mediaPlayer);
+
+                Platform.runLater(() -> {
+                    mediaView.setMediaPlayer(mediaPlayer);
+                });
+                // Set the MediaPlayer for the MediaView
+                mediaPlayerHelper.setMediaPlayer(mediaPlayer);
             }
-
-            mediaView.setMediaPlayer(mediaPlayer);
-
-            mediaPlayerHelper.setMediaPlayer(mediaPlayer);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
 
 }
