@@ -109,7 +109,7 @@
         </AnchorPane>
     </top>
     <center>
-        <MFXLegacyTableView fx:id="movieTblView" onMouseClicked="#movieTblClick" prefHeight="185.0" prefWidth="794.0" style="-fx-background-color: #42c5f5;" BorderPane.alignment="CENTER">
+        <MFXLegacyTableView fx:id="movieTblView" onMouseClicked="#movieTblClick" prefHeight="185.0" prefWidth="794.0" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
                 <TableColumn fx:id="colCategory" prefWidth="75.0" text="Category" />

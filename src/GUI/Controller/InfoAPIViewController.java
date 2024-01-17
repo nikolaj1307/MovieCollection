@@ -5,6 +5,7 @@ import BE.TMDBMovie;
 import DAL.Rest.TMDBConnector;
 import GUI.MediaPlayerHelper;
 import GUI.Util.MovieExceptions;
+import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +26,7 @@ import java.net.URISyntaxException;
 public class InfoAPIViewController {
 
     @FXML
-    private Button playMovieBtn;
+    private MFXButton playMovieBtn;
 
     @FXML
     private ImageView apiMoviePoster;
@@ -66,21 +67,24 @@ public class InfoAPIViewController {
             // Fetch the TMDBMovie data
             TMDBMovie tmdbMovie = tmdbConnector.getMovieFound();
 
+            titleTxt.setText(selectedMovie.getName());
+            genreTxt.setText(selectedMovie.getCatName());
+            ratingTxt.setText(String.valueOf(selectedMovie.getRating()));
+            personalRatingTxt.setText(String.valueOf(selectedMovie.getPersonalRating()));
+
             if (tmdbMovie != null) {
                 String posterPath = tmdbMovie.getPoster_path();
                 String posterUrl = "https://image.tmdb.org/t/p/original" + posterPath;
 
                 apiMoviePoster.setImage(new Image(posterUrl));
                 overviewTxt.setText(tmdbMovie.getOverview());
-                titleTxt.setText(selectedMovie.getName());
-                genreTxt.setText(selectedMovie.getCatName());
-                ratingTxt.setText(String.valueOf(selectedMovie.getRating()));
-                personalRatingTxt.setText(String.valueOf(selectedMovie.getPersonalRating()));
 
             } else {
                 overviewTxt.setText("Overview not available");
+                apiMoviePoster.setImage(new Image("Images/questionmark.png"));
             }
-            System.out.println("No movie is selected");
+
+
         }
     }
 
@@ -89,6 +93,11 @@ public class InfoAPIViewController {
         Movie selectedMovie = mainController.movieTblView.getSelectionModel().getSelectedItem();
         if (selectedMovie != null) {
             try {
+
+                // Close the (InfoAPIViewController's stage)
+                Stage closeInfoView = (Stage) playMovieBtn.getScene().getWindow();
+                closeInfoView.close();
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
                 Parent root = loader.load();
 
