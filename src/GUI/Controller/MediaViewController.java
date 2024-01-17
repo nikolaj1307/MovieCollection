@@ -4,6 +4,7 @@ package GUI.Controller;
 
 import BE.Movie;
 import GUI.MediaPlayerHelper;
+import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -59,7 +60,7 @@ public class MediaViewController implements Initializable {
 
     }
 
-    public void setSelectedMovie(Movie movie) {
+    public void setSelectedMovie(Movie movie) throws MovieExceptions{
         try {
             // Check if MediaPlayerHelper and MediaView are initialized
             if (mediaPlayerHelper != null && mediaView != null) {
@@ -99,7 +100,7 @@ public class MediaViewController implements Initializable {
                 mediaPlayerHelper.setMediaPlayer(mediaPlayer);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new MovieExceptions(e);
         }
     }
 }

@@ -7,7 +7,7 @@ import GUI.Model.MovieModel;
 import BE.Category;
 import BE.Movie;
 import GUI.Util.Alerts;
-import GUI.Util.Exceptions;
+import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXTextField;
 import io.github.palexdev.materialfx.controls.legacy.MFXLegacyComboBox;
@@ -30,11 +30,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -85,7 +83,7 @@ public class MainController implements Initializable {
     MediaPlayerHelper mediaPlayerHelper;
     MediaViewController mediaViewController;
 
-    private Exceptions exceptions;
+    private MovieExceptions exceptions;
 
     // Model instance for accessing movie data
     private MovieModel movieModel;
@@ -115,7 +113,11 @@ public class MainController implements Initializable {
         colPersonalRating.setCellValueFactory(new PropertyValueFactory<>("PersonalRating"));
         colViewHistory.setCellValueFactory(new PropertyValueFactory<>("LastView"));
 
-        loadCategories();
+        try {
+            loadCategories();
+        } catch (MovieExceptions e) {
+        }
+
 
         // Set the table items from the observable list in the model
         movieTblView.setItems(movieModel.getObservableMovies());
@@ -143,7 +145,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void onClickAddMovie(ActionEvent event) {
+    public void onClickAddMovie(ActionEvent event) throws MovieExceptions {
         try {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/AddMovieView.fxml"));
@@ -159,8 +161,7 @@ public class MainController implements Initializable {
             // Pass the reference to the main controller to allow communication between controllers
             addMovieController.setMainController(this);
         } catch (IOException e) {
-            exceptions.noAddMovie(e);
-            e.printStackTrace();
+            throw new MovieExceptions(e);
         }
 
     }
@@ -172,7 +173,7 @@ public class MainController implements Initializable {
     }
 
 
-    public void onClickRemove(ActionEvent event) {
+    public void onClickRemove(ActionEvent event) throws MovieExceptions {
         // Get the currently selected movie from the TableView
         Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
         // Check if a movie is selected
@@ -198,7 +199,7 @@ public class MainController implements Initializable {
                     // Clear the selection in the TableView
                     clearSelection();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new MovieExceptions(e);
                 }
             }
         } else {
@@ -208,32 +209,39 @@ public class MainController implements Initializable {
         }
     }
 
-    public void onClickPersonalRating(ActionEvent event) throws IOException {
-        Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
+    public void onClickPersonalRating(ActionEvent event) throws MovieExceptions {
+        try {
+            Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
 
-        btnPersonalRating.setDisable(true);
+            btnPersonalRating.setDisable(true);
 
-        if (selectedMovie != null) {
-            btnPersonalRating.setDisable(false);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PersonalRatingView.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
+            if (selectedMovie != null) {
+                btnPersonalRating.setDisable(false);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/PersonalRatingView.fxml"));
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setResizable(false);
 
-            stage.setTitle("Personal rating");
+                stage.setTitle("Personal rating");
 
-            PersonalRatingController personalRatingController = loader.getController();
-            personalRatingController.setMainController(this);
+                PersonalRatingController personalRatingController = loader.getController();
+                personalRatingController.setMainController(this);
 
-            stage.show();
+                stage.show();
 
-        } else {
-            btnPersonalRating.setDisable(false);
+            } else {
+                btnPersonalRating.setDisable(false);
+            }
+        } catch (IOException e) {
+            throw new MovieExceptions(e);
         }
     }
 
-    public void movieTblClick(MouseEvent mouseEvent) throws Exception {
+
+
+    public void movieTblClick(MouseEvent mouseEvent) throws MovieExceptions {
+
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
             Movie selectedMovie = movieTblView.getSelectionModel().getSelectedItem();
             if (selectedMovie != null) {
@@ -264,15 +272,15 @@ public class MainController implements Initializable {
                     stage.setTitle("Media player");
                     stage.show();
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     //exceptions.noAddMovie(e);
-                    e.printStackTrace();
+                    throw new MovieExceptions(e);
                 }
             }
         }
     }
 
-    public void onClickCatFilterBox(ActionEvent event) throws Exception {
+    public void onClickCatFilterBox(ActionEvent event) throws MovieExceptions {
         // Get the selected category from the ComboBox
         String selectedCategory = comBoxCategory.getValue();
         // Check if a category is selected
@@ -285,7 +293,7 @@ public class MainController implements Initializable {
                 movieTblView.setItems(FXCollections.observableArrayList(moviesByCategory));
 
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new MovieExceptions(e);
             }
         } else {
             // If no category is selected, show all movies
@@ -295,7 +303,7 @@ public class MainController implements Initializable {
     }
 
 
-    public void loadCategories() {
+    public void loadCategories() throws MovieExceptions{
         try {
             // Retrieve all categories from the CategoryManager
             List<Category> allCategories = categoryManager.getAllCategories();
@@ -306,7 +314,7 @@ public class MainController implements Initializable {
                 comBoxCategory.getItems().add(category.getCatName());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new MovieExceptions(e);
         }
     }
 

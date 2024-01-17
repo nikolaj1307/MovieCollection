@@ -7,6 +7,7 @@ import BLL.Utility.MovieSearcher;
 import DAL.DB.CategoryDAO_DB;
 import DAL.DB.MovieDAO_DB;
 import DAL.IMovieDataAccess;
+import GUI.Util.MovieExceptions;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
@@ -24,36 +25,61 @@ public class MovieManager {
     private CategoryDAO_DB categoryDAO_db;
 
     private MovieSearcher movieSearcher = new MovieSearcher();
+
     // Constructor initializes the movieDAO with a concrete implementation (MovieDAO_DB)
-    public MovieManager() throws IOException {
-        movieDAO = new MovieDAO_DB();
-        alerts = new Alerts();
+    public MovieManager() throws MovieExceptions {
+        try {
+            movieDAO = new MovieDAO_DB();
+            alerts = new Alerts();
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
     }
 
     // Retrieve a list of all movies from the data access layer
-    public List<Movie> getAllMovies() throws Exception {
-        return movieDAO.getAllMovies();
+    public List<Movie> getAllMovies() throws MovieExceptions {
+        try {
+            return movieDAO.getAllMovies();
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
     }
+
 
     // Create a new movie and add it to the data access layer
-    public Movie createMovie(Movie newMovie) throws Exception {
-        return movieDAO.createMovie(newMovie);
+    public Movie createMovie(Movie newMovie) throws MovieExceptions {
+        try {
+            return movieDAO.createMovie(newMovie);
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
     }
 
-    public void deleteMovie(Movie movie) throws Exception {
-        movieDAO.deleteMovie(movie);
-        System.out.println("MovieManager");
+    public void deleteMovie(Movie movie) throws MovieExceptions {
+        try {
+            movieDAO.deleteMovie(movie);
+            System.out.println("MovieManager");
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
+    }
+    public void updatePersonalRating(Movie movie, Double newRating) throws MovieExceptions {
+        try {
+            movieDAO.updatePersonalRating(movie, newRating);
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
     }
 
-    public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
-        movieDAO.updatePersonalRating(movie, newRating);
+    public void updateLastView(Movie movie, Date newDate) throws MovieExceptions {
+        try {
+            movieDAO.updateLastView(movie, newDate);
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
     }
 
-    public void updateLastView(Movie movie, Date newDate) throws Exception {
-        movieDAO.updateLastView(movie, newDate);
-    }
-
-    public List<Movie> searchMovie (String query) throws Exception {
+    public List<Movie> searchMovie (String query) throws MovieExceptions {
         List<Movie> allMovies = getAllMovies();
         List<Movie> movieResult = movieSearcher.search(allMovies, query);
         return movieResult;

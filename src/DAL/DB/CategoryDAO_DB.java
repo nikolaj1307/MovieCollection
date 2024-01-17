@@ -2,6 +2,7 @@ package DAL.DB;
 
 import BE.Category;
 import DAL.ICategoryDataAccess;
+import GUI.Util.MovieExceptions;
 
 import java.io.IOException;
 import java.sql.*;
@@ -12,13 +13,13 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
 
     private MyDatabaseConnector databaseConnector;
 
-    public CategoryDAO_DB() throws IOException {
+    public CategoryDAO_DB() throws MovieExceptions {
         databaseConnector = new MyDatabaseConnector();
     }
 
 
     @Override
-    public List<Category> getAllCategories() throws Exception {
+    public List<Category> getAllCategories() throws MovieExceptions {
 
         ArrayList<Category> allCategories = new ArrayList<>();
 
@@ -40,9 +41,12 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
             }
             return allCategories;
         }
+        catch (SQLException e){
+            throw new MovieExceptions(e);
+        }
     }
 
-    public Category insertCatToCatMovie(Category category) throws Exception {
+    public Category insertCatToCatMovie(Category category) throws MovieExceptions {
 
         // SQL command
         String sql = "INSERT INTO CatMovie  VALUES (?);";
@@ -70,11 +74,11 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
         {
             // create entry in log file
             ex.printStackTrace();
-            throw new Exception("Could not insert category", ex);
+            throw new MovieExceptions("Could not insert category", ex);
         }
     }
 
-    public int getCatId(String catName) throws Exception {
+    public int getCatId(String catName) throws MovieExceptions {
         try (Connection conn = databaseConnector.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT GenreID FROM Genre WHERE GenreType = ?")) {
 
@@ -89,22 +93,22 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
             }
             return -1;
         } catch (SQLException e) {
-            throw new Exception("Error getting Category ID", e);
+            throw new MovieExceptions("Error getting Category ID", e);
         }
     }
 
     @Override
-    public Category createNewCategory(Category category) throws Exception {
+    public Category createNewCategory(Category category) throws MovieExceptions {
         return null;
     }
 
     @Override
-    public void updateCategory(Category category) throws Exception {
+    public void updateCategory(Category category) throws MovieExceptions {
 
     }
 
     @Override
-    public Category deleteCategory(Category category) throws Exception {
+    public Category deleteCategory(Category category) throws MovieExceptions {
         return null;
     }
 }

@@ -3,6 +3,7 @@ package DAL.DB;
 import BE.Category;
 import BE.Movie;
 import DAL.IMovieDataAccess;
+import GUI.Util.MovieExceptions;
 
 import java.io.IOException;
 import java.sql.*;
@@ -14,13 +15,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
 
         private MyDatabaseConnector databaseConnector;
 
-        public MovieDAO_DB() throws IOException {
+        public MovieDAO_DB() throws MovieExceptions {
             databaseConnector = new MyDatabaseConnector();
         }
 
 
         @Override
-        public List<Movie> getAllMovies() throws Exception {
+        public List<Movie> getAllMovies() throws MovieExceptions {
             ArrayList<Movie> allMovies = new ArrayList<>();
 
             try (Connection conn = databaseConnector.getConnection();
@@ -54,13 +55,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
             }
             catch (SQLException ex){
                 ex.printStackTrace();
-                throw new Exception("Could not get movies from database", ex);
+                throw new MovieExceptions("Could not get movies from database", ex);
             }
         }
 
 
         @Override
-        public Movie createMovie(Movie movie) throws Exception {
+        public Movie createMovie(Movie movie) throws MovieExceptions {
 
             String sql =
                     "INSERT INTO dbo.Movie (Name, Rating, FileLink) " +
@@ -95,12 +96,12 @@ public class MovieDAO_DB implements IMovieDataAccess {
 
                 return createdMovie;
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                throw new MovieExceptions(e);
             }
         }
 
     @Override
-    public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
+    public void updatePersonalRating(Movie movie, Double newRating) throws MovieExceptions {
         String sql = "UPDATE dbo.movie SET PersonalRating = ? WHERE [id] = ?;";
 
         try (Connection conn = databaseConnector.getConnection();
@@ -114,13 +115,13 @@ public class MovieDAO_DB implements IMovieDataAccess {
             movie.setPersonalRating(newRating);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
 
     }
 
     @Override
-    public void updateLastView(Movie movie, Date newDate) throws Exception {
+    public void updateLastView(Movie movie, Date newDate) throws MovieExceptions {
         String sql = "UPDATE dbo.movie SET LastView = ? WHERE [id] = ?;";
 
         try (Connection conn = databaseConnector.getConnection();
@@ -137,12 +138,12 @@ public class MovieDAO_DB implements IMovieDataAccess {
             movie.setLastView(sqlDate);
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 
     @Override
-        public Movie deleteMovie(Movie movie) throws Exception {
+        public Movie deleteMovie(Movie movie) throws MovieExceptions {
 
         String sql =
                 "DElETE FROM dbo.CatMovie WHERE MovieId = ? " +
@@ -162,8 +163,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
             }
             catch (SQLException ex)
             {
-                ex.printStackTrace();
-                throw new Exception("Could not delete movie", ex);
+                throw new MovieExceptions("Could not delete movie", ex);
             }
             return movie;
         }

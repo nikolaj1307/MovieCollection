@@ -9,6 +9,7 @@ import DAL.Rest.TMDBConnector;
 import GUI.Model.CategoryModel;
 import GUI.Model.MovieModel;
 import GUI.Util.Alerts;
+import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.event.ActionEvent;
@@ -65,7 +66,6 @@ public class AddMovieController {
     private CategoryDAO_DB categoryDAO_db;
 
 
-
     // Constructor for initializing model instances
     public AddMovieController() {
         try {
@@ -77,8 +77,13 @@ public class AddMovieController {
             throw new RuntimeException(e);
         }
     }
-    public void initialize () {
-        loadCategories();
+
+    public void initialize() throws MovieExceptions {
+        try {
+            loadCategories();
+        } catch (MovieExceptions e) {
+            throw new MovieExceptions(e);
+        }
     }
 
     private MainController mainController;
@@ -98,50 +103,56 @@ public class AddMovieController {
 
 
     @FXML
-    public void onClickFileChooserBtn(ActionEvent event) throws JSONException, IOException, URISyntaxException, InterruptedException {
-        // Open a new stage for the file chooser
-        Stage stage = new Stage();
+    public void onClickFileChooserBtn(ActionEvent event) throws MovieExceptions {
+        try {
+            // Open a new stage for the file chooser
+            Stage stage = new Stage();
 
-        // Configure the file chooser
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        fileChooser.setInitialDirectory(new File("Data/Movies"));
+            // Configure the file chooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Open Resource File");
+            fileChooser.setInitialDirectory(new File("Data/Movies"));
 
-        // Allow users to select only video files with specified extensions
-        fileChooser.getExtensionFilters().addAll(
-                // Determine which file extensions are allowed while inserting a file.
-                new FileChooser.ExtensionFilter("Video files", "*.mp4", "*.mpeg4"));
+            // Allow users to select only video files with specified extensions
+            fileChooser.getExtensionFilters().addAll(
+                    // Determine which file extensions are allowed while inserting a file.
+                    new FileChooser.ExtensionFilter("Video files", "*.mp4", "*.mpeg4"));
 
-        // Show the file chooser dialog and get the selected file
-        File file = fileChooser.showOpenDialog(stage);
+            // Show the file chooser dialog and get the selected file
+            File file = fileChooser.showOpenDialog(stage);
 
-        // If a file is selected, set its name in the FilePathField
-        if (file != null) {
-            // Copy the selected file to the data folder
-            copyFileToDataFolder(file);
+            // If a file is selected, set its name in the FilePathField
+            if (file != null) {
+                // Copy the selected file to the data folder
+                copyFileToDataFolder(file);
 
-            // Set the file name in the FilePathField
-            String fileName = file.getName();
-            FilePathField.setText(fileName);
+                // Set the file name in the FilePathField
+                String fileName = file.getName();
+                FilePathField.setText(fileName);
 
-            // Extract movie name from the file name (excluding extension)
-            String movieName = fileName.substring(0, fileName.length()-4);
-            System.out.println(movieName);
+                // Extract movie name from the file name (excluding extension)
+                String movieName = fileName.substring(0, fileName.length() - 4);
+                System.out.println(movieName);
 
-            // Use TMDBConnector to fetch additional movie details from TMDB API
-            TMDBConnector tmdbConnector = new TMDBConnector(movieName);
-            tmdbMovie = tmdbConnector.getMovieFound();
+                // Use TMDBConnector to fetch additional movie details from TMDB API
+                TMDBConnector tmdbConnector = new TMDBConnector(movieName);
+                tmdbMovie = tmdbConnector.getMovieFound();
 
-            //Update UI with drama from TMDB
-            if(tmdbMovie != null) {
-                MovieNameField.setText(tmdbMovie.getOriginal_title());
-                System.out.println(tmdbMovie.getOriginal_title());
+                //Update UI with drama from TMDB
+                if (tmdbMovie != null) {
+                    MovieNameField.setText(tmdbMovie.getOriginal_title());
+                    System.out.println(tmdbMovie.getOriginal_title());
+                }
             }
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
         }
     }
 
+
+
     @FXML
-    public void onClickAddMovieSaveBtn(ActionEvent event) throws Exception {
+    public void onClickAddMovieSaveBtn(ActionEvent event) throws MovieExceptions {
 
         try {
             // Create a new movie using data from text fields
@@ -152,7 +163,6 @@ public class AddMovieController {
             double rating = Double.parseDouble(ImdbRatingField.getText());
             String fileLink = FilePathField.getText();
             String category = categoryBox.getValue();
-
 
 
             // Validate the rating value
@@ -174,18 +184,20 @@ public class AddMovieController {
             // Close the current stage
             Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();
             stage.close();
-        } catch (NumberFormatException e) {
-            // Handle the case where the user didn't enter a valid number for IMDb rating
-            alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating.");
-        }
+        } catch (Exception e){
+        // Handle the case where the user didn't enter a valid number for IMDb rating
+        alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating.");
+        throw new MovieExceptions("Please enter a valid numeric value between 0 and 10");
     }
 
-    public void onClickCategoryBox(ActionEvent event) throws Exception {
+    }
+
+    public void onClickCategoryBox(ActionEvent event) throws MovieExceptions {
 
         System.out.println("Category selected " + categoryBox.getValue());
     }
 
-    public void loadCategories() {
+    public void loadCategories() throws MovieExceptions {
         try {
             // Retrieve all categories from the CategoryManager
             List<Category> allCategories = categoryManager.getAllCategories();
@@ -196,7 +208,7 @@ public class AddMovieController {
                 categoryBox.getItems().add(category.getCatName());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new MovieExceptions(e);
         }
     }
 
