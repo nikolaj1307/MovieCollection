@@ -58,11 +58,11 @@
       </AnchorPane>
    </bottom>
    <center>
-      <AnchorPane fx:id="anchorPaneMedia" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="anchorPaneMedia" prefHeight="300.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox fx:id="hBoxMedia" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <MediaView fx:id="mediaView" fitHeight="400.0" fitWidth="600.0" />
+                  <MediaView fx:id="mediaView" fitHeight="${hBoxMedia.height}" fitWidth="${hBoxMedia.width}" />
                </children>
             </HBox>
          </children>
