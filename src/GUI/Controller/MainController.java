@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BLL.CategoryManager;
+import BLL.MovieManager;
 import GUI.MediaPlayerHelper;
 import GUI.Model.MovieModel;
 import BE.Category;
@@ -91,10 +92,12 @@ public class MainController implements Initializable {
     private Alerts alerts;
 
     private CategoryManager categoryManager;
+    private MovieManager movieManager;
 
     // Constructor for initializing model instances
     public MainController() {
         try {
+            movieManager = new MovieManager();
             categoryManager = new CategoryManager();
             movieModel = new MovieModel();
             alerts = new Alerts();
@@ -125,23 +128,8 @@ public class MainController implements Initializable {
             }
         }));
 
-        //Delays the method
-        Platform.runLater(this::movieExpiring);
-    }
-
-    public void movieExpiring() {
-        LocalDate twoYearsAgo = LocalDate.now().minusYears(2);
-
-        for (Movie movie : movieModel.getObservableMovies()) {
-            if (movie.getLastView() != null) {
-                // Convert java.sql.Date to LocalDate
-                LocalDate lastViewDate = new java.sql.Date(movie.getLastView().getTime()).toLocalDate();
-
-                if (lastViewDate.isBefore(twoYearsAgo) && (movie.getPersonalRating() < 6)) {
-                    alerts.showExpiringMovieAlert(movie);
-                }
-            }
-        }
+        // Delays the method
+        Platform.runLater(() -> movieManager.movieExpiring(movieModel.getObservableMovies()));
     }
 
     // Method to update the movie table

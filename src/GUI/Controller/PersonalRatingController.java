@@ -52,7 +52,7 @@ import javafx.stage.Stage;
         }
 
         public void OnClickPersonalRatingSaveBtn(ActionEvent event) throws Exception {
-            // Hust movieTblView er public, find ud af hvordan man kan access ved private.
+
             Movie selectedMovie = mainController.movieTblView.getSelectionModel().getSelectedItem();
 
             try {
