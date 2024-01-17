@@ -83,6 +83,8 @@ public class MainController implements Initializable {
     MediaPlayerHelper mediaPlayerHelper;
     MediaViewController mediaViewController;
 
+    private InfoAPIViewController infoAPIViewController;
+
     private MovieExceptions exceptions;
 
     // Model instance for accessing movie data
@@ -254,23 +256,22 @@ public class MainController implements Initializable {
                     movieModel.updateLastView(selectedMovie, currentDate);
 
                     updateMovieTable();
-                    clearSelection();
 
-
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/InfoAPIView.fxml"));
                     Parent root = loader.load();
 
-                    String mediaFilePath = "Data/Movies/" + selectedMovie.getFileLink();
-                    Media media = new Media(new File(mediaFilePath).toURI().toString());
-
-                    MediaViewController mediaViewController = loader.getController();
-                    mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
-                    mediaViewController.setSelectedMovie(selectedMovie);
+                    InfoAPIViewController infoAPIViewController = loader.getController();
+                    infoAPIViewController.setMainController(this);
 
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
-                    stage.setTitle("Media player");
+                    stage.setTitle("Movie Information");
+                    stage.setResizable(false);
                     stage.show();
+
+                    infoAPIViewController.changeData();
+
+                    //clearSelection();
 
                 } catch (Exception e) {
                     //exceptions.noAddMovie(e);

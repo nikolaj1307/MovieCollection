@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -41,7 +42,8 @@ public class TMDBConnector {
             JSONObject movieObject = data.getJSONObject(0);
             String jsonTitle = movieObject.getString("original_title");
             String jsonOverview = movieObject.getString("overview");
-            movieFound = new TMDBMovie(jsonTitle, jsonOverview);
+            String jsonImage = movieObject.getString("poster_path");
+            movieFound = new TMDBMovie(jsonTitle, jsonOverview, jsonImage);
         }
     }
     public TMDBMovie getMovieFound() {
@@ -54,6 +56,7 @@ public class TMDBConnector {
         TMDBMovie movie = tmdbConnector.getMovieFound();
         System.out.println(movie.getOriginal_title());
         System.out.println(movie.getOverview());
+        System.out.println(movie.getPoster_path());
 
     }
 }
