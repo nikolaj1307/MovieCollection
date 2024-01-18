@@ -253,14 +253,6 @@ public class MainController implements Initializable {
             if (selectedMovie != null) {
                 try {
 
-                    // Get the current date
-                    Date currentDate = new Date();
-
-                    // Update the last view and pass the current date
-                    movieModel.updateLastView(selectedMovie, currentDate);
-
-                    updateMovieTable();
-
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/InfoAPIView.fxml"));
                     Parent root = loader.load();
 

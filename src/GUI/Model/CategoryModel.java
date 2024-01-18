@@ -17,7 +17,6 @@ import java.util.List;
 public class CategoryModel {
 
 
-
     private CategoryManager categoryManager;
     private CategoryDAO_DB categoryDAO;
 
@@ -28,8 +27,13 @@ public class CategoryModel {
 
         categoriesToBeViewed = FXCollections.observableArrayList();
         categoriesToBeViewed.addAll(categoryManager.getAllCategories());
-
     }
+
+    // Getter for the observable list of categories
+    public ObservableList<Category> getObservableCategories() {
+        return categoriesToBeViewed;
+    }
+
 
     public void createNewCategory(String catName) throws MovieExceptions {
         Category category = new Category(catName);
@@ -37,4 +41,22 @@ public class CategoryModel {
         categoriesToBeViewed.add(category);
     }
 
+/*
+    public void deleteCategory(String categoryName) throws MovieExceptions {
+        try {
+            Category category = new Category(categoryName);
+            categoryManager.deleteCategory(category);
+
+            // Remove the category from the observable list (and UI)
+            categoriesToBeViewed.remove(category);
+
+            // Print a message (optional)
+            System.out.println("CategoryModel: Category deleted");
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
+    }
+
+ */
 }
+

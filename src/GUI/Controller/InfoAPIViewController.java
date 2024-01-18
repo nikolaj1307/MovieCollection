@@ -2,8 +2,12 @@ package GUI.Controller;
 
 import BE.Movie;
 import BE.TMDBMovie;
+import BLL.CategoryManager;
 import DAL.Rest.TMDBConnector;
 import GUI.MediaPlayerHelper;
+import GUI.Model.CategoryModel;
+import GUI.Model.MovieModel;
+import GUI.Util.Alerts;
 import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
@@ -22,6 +26,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class InfoAPIViewController {
 
@@ -48,6 +53,18 @@ public class InfoAPIViewController {
 
     private MainController mainController;
     private MediaViewController mediaViewController;
+    private MovieModel movieModel;
+
+    // Constructor for initializing model instances
+    public InfoAPIViewController() {
+        try {
+            movieModel = new MovieModel();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     // Setter for MainController
     public void setMainController(MainController mainController) {
@@ -93,6 +110,14 @@ public class InfoAPIViewController {
         Movie selectedMovie = mainController.movieTblView.getSelectionModel().getSelectedItem();
         if (selectedMovie != null) {
             try {
+
+                // Get the current date
+                Date currentDate = new Date();
+
+                // Update the last view and pass the current date
+                movieModel.updateLastView(selectedMovie, currentDate);
+
+                mainController.updateMovieTable();
 
                 // Close the (InfoAPIViewController's stage)
                 Stage closeInfoView = (Stage) playMovieBtn.getScene().getWindow();

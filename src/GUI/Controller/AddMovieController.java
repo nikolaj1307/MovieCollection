@@ -17,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -31,6 +33,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AddMovieController {
@@ -253,7 +256,7 @@ public class AddMovieController {
             stage.setResizable(false);
             stage.show();
 
-            // Get the controller for the AddMovieView.fxml
+
             CategoryAddRemoveViewController categoryAddRemoveViewController = loader.getController();
             // Pass the reference to the main controller to allow communication between controllers
             categoryAddRemoveViewController.setAddMovieController(this);
@@ -263,6 +266,42 @@ public class AddMovieController {
 
     }
 
-    public void onClickRemoveCategoryBtn(ActionEvent event) {
+    public void onClickRemoveCategoryBtn(ActionEvent event) throws MovieExceptions {
+       /*
+        String selectedCategory = categoryBox.getValue();
+
+        if (selectedCategory != null) {
+            List<Movie> moviesInCategory = movieModel.getMoviesByCategory(selectedCategory);
+            String movieList = moviesInCategory.stream()
+                    .map(Movie::getName)
+                    .collect(Collectors.joining(", "));
+
+            String alertMessage = "Are you sure you want to delete the category '" + selectedCategory + "'?\n" +
+                    "Movies in this category: " + movieList;
+
+            Alert confirmationAlert = alerts.showDeleteAlert(alertMessage);
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                try {
+                    // Delete the category from the model and data layer
+                    categoryModel.deleteCategory(selectedCategory);
+
+                    // Refresh the categories in the ComboBox
+                    loadCategories();
+
+                    mainController.updateMovieTable();
+                } catch (Exception e) {
+                    throw new MovieExceptions(e);
+                }
+            }
+        } else {
+            alerts.showAlert("No category is selected", "Please select a category before it can be deleted.");
+        }
+
+        */
     }
 }
+
+

@@ -1,6 +1,7 @@
 package DAL.DB;
 
 import BE.Category;
+import BE.Movie;
 import DAL.ICategoryDataAccess;
 import GUI.Util.MovieExceptions;
 
@@ -126,11 +127,33 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
             throw new RuntimeException(e);
         }
     }
-    
+
 
     @Override
     public void updateCategory(Category category) throws MovieExceptions {
 
+    }
+
+
+    @Override
+    public void deleteCategoryFromMovie(Category category, Movie movie) throws MovieExceptions {
+        String sql =
+                "DElETE FROM dbo.CatMovie WHERE CategoryId = ? " +
+                        "DELETE FROM dbo.Movie WHERE Id = ?" +
+                        "DELETE FROM dbo.Category WHERE Id = ?";
+
+
+        try (Connection conn = databaseConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Bind parameters
+            stmt.setInt(1, category.getCatId());
+            stmt.setInt(2, movie.getId());
+            stmt.setInt(3, category.getCatId());
+
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new MovieExceptions("Could not delete category", ex);
+        }
     }
 
     @Override
@@ -138,4 +161,5 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
         return null;
     }
 }
+
 

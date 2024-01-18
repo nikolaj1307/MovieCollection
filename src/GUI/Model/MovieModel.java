@@ -33,7 +33,6 @@ public class MovieModel {
 
     // Getter for the observable list of movies
     public ObservableList<Movie> getObservableMovies() {
-
         return moviesToBeViewed;
     }
 
