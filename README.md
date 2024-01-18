@@ -3,7 +3,8 @@ WELCOME to your Private MovieCollection.
 This readme file will help the user operate the program and how to import all the necessary libraries.
 
 The lib folder in the program will inform the user about the used libraries in the program:
-gson-2.10.1.jar ,
+
+gson-2.10.1.jar
 
 jackson-core-asl-1.8.6.jar
 
