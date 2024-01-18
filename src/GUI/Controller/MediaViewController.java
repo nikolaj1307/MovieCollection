@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaErrorEvent;
@@ -33,7 +35,12 @@ public class MediaViewController implements Initializable {
     @FXML
     private MFXButton btnPlay;
 
-    MediaPlayer mediaPlayer;
+    @FXML
+    private Slider volumeSlider;
+    @FXML
+    private Label volumeLabel;
+    private int volumeValue;
+    private MediaPlayer mediaPlayer;
     private MediaPlayerHelper mediaPlayerHelper;
 
     public void setMediaPlayerHelper(MediaPlayerHelper mediaPlayerHelper) {
@@ -58,6 +65,9 @@ public class MediaViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //volumeBar
+        volumeBar(volumeSlider);
+        volumeSlider.setValue(100);
 
     }
 
@@ -101,5 +111,14 @@ public class MediaViewController implements Initializable {
         } catch (Exception e) {
             throw new MovieExceptions(e);
         }
+    }
+    public void volumeBar(Slider volumeSlider){
+        volumeSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (mediaPlayer != null){
+                mediaPlayer.setVolume(newValue.doubleValue() / 100.0);
+                volumeValue = (int) volumeSlider.getValue();
+                volumeLabel.setText(Integer.toString(volumeValue));
+            }
+        });
     }
 }

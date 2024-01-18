@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Insets?><?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane style="-fx-background-color: #161616;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MediaViewController">
+<BorderPane prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #161616;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MediaViewController">
    <top>
       <AnchorPane prefHeight="47.0" prefWidth="590.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -32,9 +33,12 @@
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane prefHeight="39.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="55.0" prefWidth="595.0" BorderPane.alignment="CENTER_RIGHT">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
          <children>
-            <HBox alignment="CENTER" layoutX="195.0" layoutY="13.0" prefHeight="20.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="5.0">
+            <HBox alignment="CENTER" layoutX="198.0" layoutY="2.0" prefHeight="48.0" prefWidth="486.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="198.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="2.0">
                <children>
                   <MFXButton fx:id="btnPlay" buttonType="RAISED" onAction="#handlePlay" prefWidth="50.0" rippleColor="#95ecff" text="▶">
                      <HBox.margin>
@@ -46,6 +50,19 @@
                         <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </MFXButton>
+                  <Slider fx:id="volumeSlider" showTickLabels="true" showTickMarks="true" value="50.0">
+                     <HBox.margin>
+                        <Insets left="130.0" top="15.0" />
+                     </HBox.margin>
+                  </Slider>
+                  <Label fx:id="volumeLabel" text="100" textFill="#dfd2d2">
+                     <HBox.margin>
+                        <Insets top="-6.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
                </children>
             </HBox>
          </children>
