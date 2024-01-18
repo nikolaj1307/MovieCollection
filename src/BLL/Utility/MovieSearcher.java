@@ -12,7 +12,7 @@ public class MovieSearcher {
         List<Movie> searchResult = new ArrayList<>();
 
         for (Movie movie: searchBase){
-            if (compareMovieTitle(query, movie)) {
+            if (matchesFiltersAndSearch(query, movie)) {
                 searchResult.add(movie);
             }
         }
@@ -23,5 +23,9 @@ public class MovieSearcher {
         return movie.getName().toLowerCase().contains(query.toLowerCase());
     }
 
+    private boolean matchesFiltersAndSearch(String query, Movie movie) {
+        boolean matchesTitle = compareMovieTitle(query, movie);
 
+        return matchesTitle;
+    }
 }

@@ -83,6 +83,20 @@ public class MovieModel {
         }
         return moviesByCategory;
     }
+
+    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, String selectedCategory) {
+        List<Movie> moviesByRatingAndCategories = new ArrayList<>();
+        for (Movie movie : moviesToBeViewed) {
+            boolean isCategoryMatch = selectedCategory == null || selectedCategory.equals(movie.getCatName());
+            boolean isRatingMatch = selectedRating == null || movie.getRating() >= selectedRating;
+
+            if (isCategoryMatch && isRatingMatch) {
+                moviesByRatingAndCategories.add(movie);
+            }
+        }
+        return moviesByRatingAndCategories;
+    }
+
 }
 
 
