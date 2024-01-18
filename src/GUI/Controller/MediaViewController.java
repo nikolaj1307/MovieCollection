@@ -16,6 +16,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaErrorEvent;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URI;
@@ -60,7 +61,7 @@ public class MediaViewController implements Initializable {
 
     }
 
-    public void setSelectedMovie(Movie movie) throws MovieExceptions{
+    public void setSelectedMovie(Movie movie, Stage stage) throws MovieExceptions{
         try {
             // Check if MediaPlayerHelper and MediaView are initialized
             if (mediaPlayerHelper != null && mediaView != null) {
@@ -76,28 +77,26 @@ public class MediaViewController implements Initializable {
                 System.out.println("Media URI: " + uri.toString());
 
                 //virker ikke endnu...
-                if (mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    mediaPlayer.dispose();
-                    mediaPlayer = null;
-                }
+
                 // Create a new Media object from the URI
                 Media media = new Media(uri.toString());
 
                 //Create a new MediaPlayer instance for the selected media
                 mediaPlayer = new MediaPlayer(media);
-                /*mediaPlayer.setOnError(() -> {
-                    System.out.println("Media Error: " + mediaPlayer.getError());
-                });*/
-
-                // Set the MediaPlayer for the MediaView
-                //mediaView.setMediaPlayer(mediaPlayer);
 
                 Platform.runLater(() -> {
                     mediaView.setMediaPlayer(mediaPlayer);
                 });
                 // Set the MediaPlayer for the MediaView
                 mediaPlayerHelper.setMediaPlayer(mediaPlayer);
+
+                stage.setOnHidden(event -> {
+                    if (mediaPlayer != null) {
+                        mediaPlayer.stop();
+                        mediaPlayer.dispose();
+                        mediaPlayer = null;
+                    }
+                });
             }
         } catch (Exception e) {
             throw new MovieExceptions(e);

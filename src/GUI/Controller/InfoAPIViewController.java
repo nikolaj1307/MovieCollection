@@ -101,17 +101,18 @@ public class InfoAPIViewController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/MediaView.fxml"));
                 Parent root = loader.load();
 
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Media player");
+                stage.show();
+
                 String mediaFilePath = "Data/Movies/" + selectedMovie.getFileLink();
                 Media media = new Media(new File(mediaFilePath).toURI().toString());
 
                 MediaViewController mediaViewController = loader.getController();
                 mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
-                mediaViewController.setSelectedMovie(selectedMovie);
+                mediaViewController.setSelectedMovie(selectedMovie, (Stage) root.getScene().getWindow());
 
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Media player");
-                stage.show();
 
             } catch (Exception e) {
                 throw new MovieExceptions(e);

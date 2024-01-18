@@ -171,6 +171,12 @@ public class AddMovieController {
                 return; // Exit the method if there's an error
             }
 
+
+            /*if (category == null) {
+                alerts.showAlert("Error", "Please enter a valid category for the movie");
+                return;
+            }*/
+
             // Create a new Movie object
             Movie newMovie = new Movie(name, category, rating, fileLink);
 
@@ -186,7 +192,7 @@ public class AddMovieController {
             stage.close();
         } catch (Exception e){
         // Handle the case where the user didn't enter a valid number for IMDb rating
-        alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating.");
+        alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating, AND pick a category for the movie.");
         throw new MovieExceptions("Please enter a valid numeric value between 0 and 10");
     }
 
