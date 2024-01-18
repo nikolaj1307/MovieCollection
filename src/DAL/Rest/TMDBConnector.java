@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -14,6 +15,7 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Properties;
 
 public class TMDBConnector {
 
@@ -23,15 +25,27 @@ public class TMDBConnector {
     searchMovie(title);
     }
 
+    public static String getApiKey() {
+        Properties properties = new Properties();
+        try (FileInputStream fileInputStream = new FileInputStream("config/config.api")) {
+            properties.load(fileInputStream);
+            return properties.getProperty("API_KEY");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void searchMovie(String title) throws IOException, URISyntaxException, InterruptedException, JSONException {
         HttpClient client =HttpClient.newHttpClient();
+        String apiKey = getApiKey();
 
         String query = URLEncoder.encode(title, "UTF-8");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI("https://api.themoviedb.org/3/search/movie?query=" + query))
                 .header("accept", "application/json")
-                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2M2U0ZWMzY2IxOGQ5ZGQ3ODFkZTgxYTY5NTRmNTZkYSIsInN1YiI6IjY1OWRkYjM1NmQ5N2U2MDBmMDc4ZDMyNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8beju07le3y6Pp4-QMttgFeFUlP6wqRaHEfWvW5mqRo")
+                .header("Authorization", "Bearer " + apiKey)
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
