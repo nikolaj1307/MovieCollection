@@ -33,5 +33,12 @@ public class CategoryManager {
         }
     }
 
+    public Category createNewCategory(Category category) throws MovieExceptions {
+        try {
+            return categoryDAO.createNewCategory(category);
+        } catch (Exception e) {
+            throw new MovieExceptions(e);
+        }
+    }
+    }
 
-}

@@ -14,6 +14,9 @@ import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -33,6 +36,12 @@ import java.util.stream.Collectors;
 public class AddMovieController {
 
     // FXML elements for UI controls
+    @FXML
+    private MFXButton addCategoryBtn;
+
+    @FXML
+    private MFXButton removeCategoryBtn;
+
     @FXML
     private MFXButton AddMovieCancelBtn;
 
@@ -149,6 +158,10 @@ public class AddMovieController {
         }
     }
 
+    public void addCategoriesToBox(Category category) {
+        // Add the new movie to the table view
+        categoryBox.getItems().add(String.valueOf(category));
+    }
 
 
     @FXML
@@ -227,5 +240,29 @@ public class AddMovieController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void onClickAddCategoryBtn(ActionEvent event) throws MovieExceptions {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/CategoryAddRemoveView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Add category");
+            stage.setResizable(false);
+            stage.show();
+
+            // Get the controller for the AddMovieView.fxml
+            CategoryAddRemoveViewController categoryAddRemoveViewController = loader.getController();
+            // Pass the reference to the main controller to allow communication between controllers
+            categoryAddRemoveViewController.setAddMovieController(this);
+        } catch (IOException e) {
+            throw new MovieExceptions(e);
+        }
+
+    }
+
+    public void onClickRemoveCategoryBtn(ActionEvent event) {
     }
 }

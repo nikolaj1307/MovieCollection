@@ -99,8 +99,34 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
 
     @Override
     public Category createNewCategory(Category category) throws MovieExceptions {
-        return null;
+        String sql = "INSERT INTO dbo.Category (CatName) VALUES (?);";
+
+        try (Connection conn = databaseConnector.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //Bind parameters
+            stmt.setString(1, category.getCatName());
+
+            // Run the specified SQL statement
+            stmt.executeUpdate();
+
+            // Get the generated ID from the DB
+            ResultSet rs = stmt.getGeneratedKeys();
+            int id = 0;
+
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+
+            Category createdCategory = new Category(category.getCatName());
+
+            return createdCategory;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+    
 
     @Override
     public void updateCategory(Category category) throws MovieExceptions {
