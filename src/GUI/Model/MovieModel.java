@@ -70,19 +70,18 @@ public class MovieModel {
         moviesToBeViewed.addAll(searchResult);
     }
 
-    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, String selectedCategory) {
+    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, List<String> selectedCategory) {
         List<Movie> moviesByRatingAndCategories = new ArrayList<>();
         for (Movie movie : moviesToBeViewed) {
-            boolean isCategoryMatch = selectedCategory == null || selectedCategory.equals(movie.getCatName());
-            boolean isRatingMatch = selectedRating == null || movie.getRating() >= selectedRating;
+            boolean categoryIsMatch = selectedCategory == null || selectedCategory.isEmpty() || selectedCategory.contains(movie.getCatName());
+            boolean ratingIsMatch = selectedRating == null || movie.getRating() >= selectedRating;
 
-            if (isCategoryMatch && isRatingMatch) {
+            if (categoryIsMatch && ratingIsMatch) {
                 moviesByRatingAndCategories.add(movie);
             }
         }
         return moviesByRatingAndCategories;
     }
-
 }
 
 

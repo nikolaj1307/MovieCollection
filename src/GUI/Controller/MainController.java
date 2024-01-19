@@ -30,7 +30,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +55,9 @@ public class MainController implements Initializable {
 
     @FXML
     private MFXButton btnRemove;
+
+    @FXML
+    private CheckComboBox checkCatFilter;
 
     @FXML
     private TableColumn<Category, String> colCategory;
@@ -119,8 +124,8 @@ public class MainController implements Initializable {
         colViewHistory.setCellValueFactory(new PropertyValueFactory<>("LastView"));
 
         try {
-            loadCategories();
             loadRatingFilters();
+            loadCategories();
         } catch (MovieExceptions e) {
         }
 
@@ -244,8 +249,6 @@ public class MainController implements Initializable {
         }
     }
 
-
-
     public void movieTblClick(MouseEvent mouseEvent) throws MovieExceptions {
 
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 2) {
@@ -277,23 +280,30 @@ public class MainController implements Initializable {
         }
     }
 
-    public void onClickCatFilterBox(ActionEvent event) {
+    public void onClickRatFilterBox(ActionEvent event) {
         filterMovies();
-
     }
 
-    public void onClickRatFilterBox(ActionEvent event) {
+    public void loadRatingFilters() {
+        comBoxRating.getItems().addAll(5.0, 7.5, 9.0);
+    }
+
+    public void onSelectCatFilter(ActionEvent event) {
         filterMovies();
     }
 
     public void filterMovies() {
         Double selectedRating = comBoxRating.getValue();
-        String selectedCategory = comBoxCategory.getValue();
+        List<String> selectedCategories = checkCatFilter.getCheckModel().getCheckedItems();
+
 
         try {
-            if (selectedRating != null || selectedCategory != null) {
-                List<Movie> filteredMovies = movieModel.getMoviesByRatingAndCategories(selectedRating, selectedCategory);
+            if (selectedRating != null || !selectedCategories.isEmpty()) {
+
+                List<Movie> filteredMovies = movieModel.getMoviesByRatingAndCategories(selectedRating, selectedCategories);
                 movieTblView.setItems(FXCollections.observableArrayList(filteredMovies));
+                System.out.println(selectedCategories);
+                movieTblView.refresh();
             } else {
                 movieTblView.setItems(movieModel.getObservableMovies());
             }
@@ -302,33 +312,19 @@ public class MainController implements Initializable {
         }
     }
 
-    public void loadCategories() throws MovieExceptions{
+
+    public void loadCategories() throws MovieExceptions {
         try {
-            // Retrieve all categories from the CategoryManager
             List<Category> allCategories = categoryManager.getAllCategories();
-            // Clear the existing items in the comBoxCategory (ComboBox)
-            comBoxCategory.getItems().clear();
-            // Iterate through the list of categories and add their names to the comBoxCategory
+
+            checkCatFilter.getItems().clear();
+
             for (Category category : allCategories) {
-                comBoxCategory.getItems().add(category.getCatName());
+                checkCatFilter.getItems().add(category.getCatName());
             }
         } catch (Exception e) {
             throw new MovieExceptions(e);
         }
-    }
-
-    public void loadRatingFilters() {
-        comBoxRating.getItems().addAll(5.0, 7.5, 9.0);
-    }
-
-    public void filterAndSearchMovies (){
-        double selectedRating = comBoxRating.getValue();
-        String selectedCategory = comBoxCategory.getValue();
-        String searchQuery = searchField.getText();
-
-        List<Movie> filteredMovies = movieModel.getMoviesByRatingAndCategories(selectedRating, selectedCategory);
-        List<Movie> searchedMovies = movieSearcher.search(filteredMovies, searchQuery);
-        movieTblView.setItems(FXCollections.observableArrayList(searchedMovies));
     }
 
     public void searchMovies(){
