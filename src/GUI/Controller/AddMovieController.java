@@ -1,3 +1,4 @@
+// Import statements
 package GUI.Controller;
 
 import BE.Category;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+// Controller class for the AddMovieView
 public class AddMovieController {
 
     // FXML elements for UI controls
@@ -75,6 +77,7 @@ public class AddMovieController {
         }
     }
 
+    // Initialization method
     public void initialize() throws MovieExceptions {
         try {
             loadCategories();
@@ -83,14 +86,12 @@ public class AddMovieController {
         }
     }
 
-
-
     // Setter for MainController
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-
+    // Event handler for the Cancel button
     @FXML
     public void onClickAddMovieCancelBtn(ActionEvent event) {
         // Close the current stage
@@ -98,7 +99,7 @@ public class AddMovieController {
         stage.close();
     }
 
-
+    // Event handler for the FileChooser button
     @FXML
     public void onClickFileChooserBtn(ActionEvent event) throws MovieExceptions {
         try {
@@ -135,7 +136,7 @@ public class AddMovieController {
                 TMDBConnector tmdbConnector = new TMDBConnector(movieName);
                 tmdbMovie = tmdbConnector.getMovieFound();
 
-                //Update UI with drama from TMDB
+                // Update UI with drama from TMDB
                 if (tmdbMovie != null) {
                     MovieNameField.setText(tmdbMovie.getOriginal_title());
                     System.out.println(tmdbMovie.getOriginal_title());
@@ -146,11 +147,14 @@ public class AddMovieController {
         }
     }
 
+    // Method to add categories to the ComboBox
     public void addCategoriesToBox(Category category) {
         // Add the new movie to the table view
         categoryBox.getItems().add(String.valueOf(category));
     }
 
+    // Event handler for the Save button
+    @FXML
     public void onClickAddMovieSaveBtn(ActionEvent event) throws MovieExceptions {
         // Retrieve data from text fields
         String name = MovieNameField.getText();
@@ -171,7 +175,6 @@ public class AddMovieController {
                 alerts.showAlert("Error", "Please enter a valid IMDb rating between 0 and 10.");
                 return; // Exit the method if there's an error
             }
-
 
             if (category == null || category.isEmpty()) {
                 alerts.showAlert("Error", "Please select a category for the movie");
@@ -202,11 +205,13 @@ public class AddMovieController {
         }
     }
 
+    // Event handler for the CategoryBox (ComboBox)
+    @FXML
     public void onClickCategoryBox(ActionEvent event) throws MovieExceptions {
-
         System.out.println("Category selected " + categoryBox.getValue());
     }
 
+    // Method to load categories into the ComboBox
     public void loadCategories() throws MovieExceptions {
         try {
             // Retrieve all categories from the CategoryManager
@@ -222,6 +227,7 @@ public class AddMovieController {
         }
     }
 
+    // Method to copy a file to the data folder
     private void copyFileToDataFolder(File sourceFile) throws MovieExceptions {
         try {
             // Create a Path for the destination file in the "Data/Movies" directory
@@ -233,9 +239,11 @@ public class AddMovieController {
         }
     }
 
+    // Event handler for the Add Category button
+    @FXML
     public void onClickAddCategoryBtn(ActionEvent event) throws MovieExceptions {
         try {
-
+            // Open the CategoryAddRemoveView in a new stage
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/CategoryAddRemoveView.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -244,16 +252,17 @@ public class AddMovieController {
             stage.setResizable(false);
             stage.show();
 
-
+            // Get the controller for the CategoryAddRemoveView
             CategoryAddRemoveViewController categoryAddRemoveViewController = loader.getController();
             // Pass the reference to the main controller to allow communication between controllers
             categoryAddRemoveViewController.setAddMovieController(this);
         } catch (IOException e) {
             throw new MovieExceptions(e);
         }
-
     }
 
+    // Event handler for the Remove Category button
+    @FXML
     public void onClickRemoveCategoryBtn(ActionEvent event) throws MovieExceptions {
         // Get the selected category from the categoryBox
         String getSelectedCategory = categoryBox.getValue();
@@ -279,6 +288,7 @@ public class AddMovieController {
                 // Update the UI by reloading the categories
                 loadCategories();
 
+                // Clear the selection in the categoryBox
                 categoryBox.clearSelection();
             } catch (Exception e) {
                 throw new MovieExceptions(e);
@@ -286,6 +296,3 @@ public class AddMovieController {
         }
     }
 }
-
-
-

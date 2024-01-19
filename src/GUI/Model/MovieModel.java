@@ -1,3 +1,4 @@
+// Import statements
 package GUI.Model;
 
 import BE.Movie;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+// Model class for managing movies
 public class MovieModel {
 
     // ObservableList to store movies for viewing
@@ -31,6 +33,7 @@ public class MovieModel {
         // Load all movies from the manager into the observable list
         moviesToBeViewed.addAll(movieManager.getAllMovies());
 
+        // Initialize MovieSearcher for searching movies
         movieSearcher = new MovieSearcher();
     }
 
@@ -51,30 +54,37 @@ public class MovieModel {
         moviesToBeViewed.add(movie);
     }
 
+    // Method to delete a movie
     public void deleteMovie(Movie movie) throws MovieExceptions {
-        // delete movie in DAL layer (through the layers)
+        // Delete the movie in DAL layer
         movieManager.deleteMovie(movie);
-        // remove from observable list (and UI)
+
+        // Remove the movie from the observable list (and UI)
         moviesToBeViewed.remove(movie);
         System.out.println("MovieModel");
     }
 
+    // Method to update personal rating of a movie
     public void updatePersonalRating(Movie movie, Double newRating) throws MovieExceptions {
         movieManager.updatePersonalRating(movie, newRating);
     }
 
+    // Method to update the last view date of a movie
     public void updateLastView(Movie movie, Date newDate) throws MovieExceptions {
         movieManager.updateLastView(movie, newDate);
     }
 
+    // Method to get movies based on rating, categories, and search query
     public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, List<String> selectedCategory, String searchQuery) throws MovieExceptions {
         List<Movie> moviesByRatingAndCategories = new ArrayList<>();
         for (Movie movie : moviesToBeViewed) {
 
+            // Check if the movie matches the selected criteria
             boolean categoryIsMatch = selectedCategory == null || selectedCategory.isEmpty() || selectedCategory.contains(movie.getCatName());
             boolean ratingIsMatch = selectedRating == null || movie.getRating() >= selectedRating;
             boolean titleIsMatch = movieSearcher.compareMovieTitle(searchQuery, movie);
 
+            // If all conditions are met, add the movie to the list
             if (categoryIsMatch && ratingIsMatch && titleIsMatch) {
                 moviesByRatingAndCategories.add(movie);
             }
@@ -82,5 +92,3 @@ public class MovieModel {
         return moviesByRatingAndCategories;
     }
 }
-
-

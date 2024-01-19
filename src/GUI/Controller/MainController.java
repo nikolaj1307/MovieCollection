@@ -2,8 +2,6 @@ package GUI.Controller;
 
 import BLL.CategoryManager;
 import BLL.MovieManager;
-import BLL.Utility.MovieSearcher;
-import GUI.MediaPlayerHelper;
 import GUI.Model.MovieModel;
 import BE.Category;
 import BE.Movie;

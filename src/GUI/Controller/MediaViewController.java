@@ -1,3 +1,4 @@
+// Import statements
 package GUI.Controller;
 
 import BE.Movie;
@@ -20,24 +21,29 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// Controller class for the MediaView
 public class MediaViewController implements Initializable {
 
+    // FXML elements for UI controls
     @FXML
     public MediaView mediaView;
 
     @FXML
     private Slider volumeSlider;
+
     @FXML
     private Label volumeLabel;
+
     private int volumeValue;
     private MediaPlayer mediaPlayer;
     private MediaPlayerHelper mediaPlayerHelper;
 
+    // Setter for MediaPlayerHelper
     public void setMediaPlayerHelper(MediaPlayerHelper mediaPlayerHelper) {
         this.mediaPlayerHelper = mediaPlayerHelper;
     }
 
-
+    // Event handler for the Play button
     public void handlePlay(ActionEvent event) {
         Platform.runLater(() -> {
             if (mediaPlayerHelper != null) {
@@ -46,6 +52,7 @@ public class MediaViewController implements Initializable {
         });
     }
 
+    // Event handler for the Pause button
     public void handlePause(ActionEvent event) {
         if (mediaPlayerHelper != null) {
             mediaPlayerHelper.pauseMovie();
@@ -54,13 +61,13 @@ public class MediaViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //volumeBar
+        // Initialize the volume slider and set its initial value
         volumeBar(volumeSlider);
         volumeSlider.setValue(100);
-
     }
 
-    public void setSelectedMovie(Movie movie, Stage stage) throws MovieExceptions{
+    // Method to set the selected movie and initialize MediaPlayer
+    public void setSelectedMovie(Movie movie, Stage stage) throws MovieExceptions {
         try {
             // Check if MediaPlayerHelper and MediaView are initialized
             if (mediaPlayerHelper != null && mediaView != null) {
@@ -78,7 +85,7 @@ public class MediaViewController implements Initializable {
                 // Create a new Media object from the URI
                 Media media = new Media(uri.toString());
 
-                //Create a new MediaPlayer instance for the selected media
+                // Create a new MediaPlayer instance for the selected media
                 mediaPlayer = new MediaPlayer(media);
 
                 Platform.runLater(() -> {
@@ -87,6 +94,7 @@ public class MediaViewController implements Initializable {
                 // Set the MediaPlayer for the MediaView
                 mediaPlayerHelper.setMediaPlayer(mediaPlayer);
 
+                // Stop and dispose of MediaPlayer when the stage is closed
                 stage.setOnHidden(event -> {
                     if (mediaPlayer != null) {
                         mediaPlayer.stop();
@@ -99,9 +107,11 @@ public class MediaViewController implements Initializable {
             throw new MovieExceptions(e);
         }
     }
-    public void volumeBar(Slider volumeSlider){
+
+    // Method to handle volume adjustments using the volume slider
+    public void volumeBar(Slider volumeSlider) {
         volumeSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
-            if (mediaPlayer != null){
+            if (mediaPlayer != null) {
                 mediaPlayer.setVolume(newValue.doubleValue() / 100.0);
                 volumeValue = (int) volumeSlider.getValue();
                 volumeLabel.setText(Integer.toString(volumeValue));
