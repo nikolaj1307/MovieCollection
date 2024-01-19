@@ -41,22 +41,10 @@ public class AddMovieController {
 
     // FXML elements for UI controls
     @FXML
-    private MFXButton addCategoryBtn;
-
-    @FXML
-    private MFXButton removeCategoryBtn;
-
-    @FXML
     private MFXButton AddMovieCancelBtn;
 
     @FXML
     private MFXComboBox<String> categoryBox;
-
-    @FXML
-    private MFXButton AddMovieSaveBtn;
-
-    @FXML
-    private MFXButton FileChooserBtn;
 
     @FXML
     private TextField FilePathField;
@@ -71,23 +59,19 @@ public class AddMovieController {
     private CategoryModel categoryModel;
     private MovieModel movieModel;
     private TMDBMovie tmdbMovie;
-
     private CategoryManager categoryManager;
-
     private Alerts alerts;
-
-    private CategoryDAO_DB categoryDAO_db;
-
+    private MainController mainController;
 
     // Constructor for initializing model instances
-    public AddMovieController() {
+    public AddMovieController() throws MovieExceptions {
         try {
             movieModel = new MovieModel();
             categoryModel = new CategoryModel();
             categoryManager = new CategoryManager();
             alerts = new Alerts();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 
@@ -99,7 +83,7 @@ public class AddMovieController {
         }
     }
 
-    private MainController mainController;
+
 
     // Setter for MainController
     public void setMainController(MainController mainController) {
@@ -167,14 +151,7 @@ public class AddMovieController {
         categoryBox.getItems().add(String.valueOf(category));
     }
 
-
-    @FXML
     public void onClickAddMovieSaveBtn(ActionEvent event) throws MovieExceptions {
-
-
-        // Create a new movie using data from text fields
-        //   movieModel.createMovie(MovieNameField.getText(), categoryBox.getValue(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
-
         // Retrieve data from text fields
         String name = MovieNameField.getText();
         String ratingText = ImdbRatingField.getText();
@@ -245,14 +222,14 @@ public class AddMovieController {
         }
     }
 
-    private void copyFileToDataFolder(File sourceFile) {
+    private void copyFileToDataFolder(File sourceFile) throws MovieExceptions {
         try {
             // Create a Path for the destination file in the "Data/Movies" directory
             Path destinationPath = Paths.get("Data/Movies", sourceFile.getName());
             // Copy the source file to the destination path, replacing it if it already exists
             Files.copy(sourceFile.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new MovieExceptions(e);
         }
     }
 
@@ -277,8 +254,6 @@ public class AddMovieController {
 
     }
 
-
-    @FXML
     public void onClickRemoveCategoryBtn(ActionEvent event) throws MovieExceptions {
         // Get the selected category from the categoryBox
         String getSelectedCategory = categoryBox.getValue();

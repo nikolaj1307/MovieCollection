@@ -1,7 +1,5 @@
 package GUI.Util;
 
-import javafx.scene.control.ButtonType;
-
 public class MovieExceptions extends Exception {
 
     public MovieExceptions() {

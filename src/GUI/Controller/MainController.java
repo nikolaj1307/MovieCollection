@@ -28,15 +28,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 
-import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -46,17 +42,9 @@ public class MainController implements Initializable {
     public MFXButton applyFilterBtn;
     public MFXButton clearBtn;
     // FXML elements for UI controls
-    @FXML
-    private BorderPane BorderPane;
-
-    @FXML
-    private MFXButton btnAddMovie;
 
     @FXML
     private MFXButton btnPersonalRating;
-
-    @FXML
-    private MFXButton btnRemove;
 
     @FXML
     private CheckComboBox<String> checkCatFilter;
@@ -77,9 +65,6 @@ public class MainController implements Initializable {
     private TableColumn<Movie, Integer> colViewHistory;
 
     @FXML
-    private MFXLegacyComboBox<String> comBoxCategory;
-
-    @FXML
     private MFXLegacyComboBox<Double> comBoxRating;
 
     @FXML
@@ -88,13 +73,6 @@ public class MainController implements Initializable {
     @FXML
     private MFXTextField searchField;
 
-    MediaPlayerHelper mediaPlayerHelper;
-    MediaViewController mediaViewController;
-
-    private InfoAPIViewController infoAPIViewController;
-
-    private MovieExceptions exceptions;
-
     // Model instance for accessing movie data
     private MovieModel movieModel;
     private Alerts alerts;
@@ -102,18 +80,16 @@ public class MainController implements Initializable {
     private CategoryManager categoryManager;
     private MovieManager movieManager;
 
-    private MovieSearcher movieSearcher;
 
     // Constructor for initializing model instances
-    public MainController() {
+    public MainController() throws MovieExceptions {
         try {
             movieManager = new MovieManager();
             categoryManager = new CategoryManager();
             movieModel = new MovieModel();
             alerts = new Alerts();
-            movieSearcher = new MovieSearcher();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 
@@ -130,6 +106,7 @@ public class MainController implements Initializable {
             loadRatingFilters();
             loadCategories();
         } catch (MovieExceptions e) {
+            e.printStackTrace();
         }
 
 
@@ -158,7 +135,6 @@ public class MainController implements Initializable {
         movieTblView.getSelectionModel().clearSelection();
     }
 
-    @FXML
     public void onClickAddMovie(ActionEvent event) throws MovieExceptions {
         try {
 
@@ -272,11 +248,7 @@ public class MainController implements Initializable {
                     stage.show();
 
                     infoAPIViewController.changeData();
-
-                    //clearSelection();
-
                 } catch (Exception e) {
-                    //exceptions.noAddMovie(e);
                     throw new MovieExceptions(e);
                 }
             }
@@ -293,8 +265,6 @@ public class MainController implements Initializable {
 
     public void onSelectCatFilter(ActionEvent event) {
         filterAndSearchMovies();
-
-
     }
 
     public void filterAndSearchMovies() {
@@ -317,7 +287,6 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     public void loadCategories() throws MovieExceptions {
         try {
@@ -346,7 +315,6 @@ public class MainController implements Initializable {
 
         // Reset table to show all movies
         movieTblView.setItems(movieModel.getObservableMovies());
-
     }
 }
 

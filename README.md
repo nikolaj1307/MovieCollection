@@ -20,6 +20,8 @@ mssql-jdbc-12.4.2.jre11.jar
 
 virtualizedfx-11.2.6.jar
 
+com.github.martinkoster:actionfx-controlsfx:1.6.0
+
 In case you want to open the program in SceneBuilder, will you 
 need to add the materialfx in there as well.
 

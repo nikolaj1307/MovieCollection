@@ -1,16 +1,12 @@
 package BLL;
 
-import BE.Category;
 import BE.Movie;
 import GUI.Util.Alerts;
 import BLL.Utility.MovieSearcher;
-import DAL.DB.CategoryDAO_DB;
 import DAL.DB.MovieDAO_DB;
 import DAL.IMovieDataAccess;
 import GUI.Util.MovieExceptions;
-import javafx.collections.ObservableList;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -21,8 +17,6 @@ public class MovieManager {
 
     // Data access object for handling movie-related database operations
     private IMovieDataAccess movieDAO;
-
-    private CategoryDAO_DB categoryDAO_db;
 
     private MovieSearcher movieSearcher = new MovieSearcher();
 
@@ -35,7 +29,6 @@ public class MovieManager {
             throw new MovieExceptions(e);
         }
     }
-
     // Retrieve a list of all movies from the data access layer
     public List<Movie> getAllMovies() throws MovieExceptions {
         try {
@@ -44,7 +37,6 @@ public class MovieManager {
             throw new MovieExceptions(e);
         }
     }
-
 
     // Create a new movie and add it to the data access layer
     public Movie createMovie(Movie newMovie) throws MovieExceptions {
@@ -77,12 +69,6 @@ public class MovieManager {
         } catch (Exception e) {
             throw new MovieExceptions(e);
         }
-    }
-
-    public List<Movie> searchMovie (String query) throws MovieExceptions {
-        List<Movie> allMovies = getAllMovies();
-        List<Movie> movieResult = movieSearcher.search(allMovies, query);
-        return movieResult;
     }
 
     public void movieExpiring(List<Movie> movies) {

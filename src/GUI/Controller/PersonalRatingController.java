@@ -4,6 +4,7 @@
 import BE.Movie;
 import GUI.Model.MovieModel;
 import GUI.Util.Alerts;
+import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,24 +26,21 @@ import javafx.stage.Stage;
 
         private MainController mainController;
 
-
-        // Model instances for accessing data
         private MovieModel movieModel;
         private Alerts alerts;
 
         // Constructor for initializing model instances
-        public PersonalRatingController() {
+        public PersonalRatingController() throws MovieExceptions {
             try {
                 movieModel = new MovieModel();
                 alerts = new Alerts();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new MovieExceptions(e);
             }
         }
 
-
-        // Setter for MainController
         public void setMainController(MainController mainController) {
+
             this.mainController = mainController;
         }
 

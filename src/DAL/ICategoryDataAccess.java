@@ -1,7 +1,6 @@
 package DAL;
 
 import BE.Category;
-import BE.Movie;
 import GUI.Util.MovieExceptions;
 
 
@@ -11,8 +10,6 @@ public interface ICategoryDataAccess {
     public List<Category> getAllCategories() throws MovieExceptions;
 
     public Category createNewCategory(Category category) throws MovieExceptions;
-
-    public void updateCategory(Category category) throws MovieExceptions;
 
     public Category deleteCategory(Category category) throws MovieExceptions;
 }

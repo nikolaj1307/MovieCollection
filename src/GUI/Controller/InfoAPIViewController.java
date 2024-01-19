@@ -2,12 +2,9 @@ package GUI.Controller;
 
 import BE.Movie;
 import BE.TMDBMovie;
-import BLL.CategoryManager;
 import DAL.Rest.TMDBConnector;
 import GUI.MediaPlayerHelper;
-import GUI.Model.CategoryModel;
 import GUI.Model.MovieModel;
-import GUI.Util.Alerts;
 import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
@@ -15,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
@@ -52,16 +48,14 @@ public class InfoAPIViewController {
     private Text personalRatingTxt;
 
     private MainController mainController;
-    private MediaViewController mediaViewController;
     private MovieModel movieModel;
 
     // Constructor for initializing model instances
-    public InfoAPIViewController() {
+    public InfoAPIViewController() throws MovieExceptions {
         try {
             movieModel = new MovieModel();
-
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 
@@ -100,8 +94,6 @@ public class InfoAPIViewController {
                 overviewTxt.setText("Overview not available");
                 apiMoviePoster.setImage(new Image("Images/questionmark.png"));
             }
-
-
         }
     }
 

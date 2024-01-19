@@ -17,16 +17,7 @@ public class Category {
     }
 
     public String getCatName() {
-
-        return catName;
-    }
-
-    public int getCatId() {
-        return catId;
-    }
-
-    public void setCatId(int catId) {
-        this.catId = catId;
-    }
+        return catName; }
+    
 
 }

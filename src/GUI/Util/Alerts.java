@@ -6,7 +6,6 @@ import javafx.scene.control.ButtonType;
 
 public class Alerts {
 
-    // Skal gøres private, men man skal stadig kunne bruge dem.
 
     public static Alert showDeleteAlert(String message) {
         Alert confirmationAlert = new Alert(Alert.AlertType.NONE, //Use NONE inorder to get rid of the standard icon
@@ -35,6 +34,4 @@ public class Alerts {
         alert.setContentText(expiringMessage);
         alert.showAndWait();
     }
-
-
 }

@@ -78,21 +78,6 @@ public class Movie {
         return catName;
     }
 
-    public void setName() {
-
-        this.name = name;
-    }
-
-    public void setRating() {
-
-        this.rating = rating;
-    }
-
-    public void setFileLink() {
-
-        this.fileLink = fileLink;
-    }
-
     public void setLastView(Date lastView) {
 
         this.lastView = lastView;

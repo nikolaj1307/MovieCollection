@@ -1,7 +1,5 @@
 package GUI.Controller;
 
-// Importer de nødvendige klasser
-
 import BE.Movie;
 import GUI.MediaPlayerHelper;
 import GUI.Util.MovieExceptions;
@@ -10,12 +8,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaErrorEvent;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
@@ -29,11 +24,6 @@ public class MediaViewController implements Initializable {
 
     @FXML
     public MediaView mediaView;
-    @FXML
-    private MFXButton btnPause;
-
-    @FXML
-    private MFXButton btnPlay;
 
     @FXML
     private Slider volumeSlider;
@@ -47,7 +37,7 @@ public class MediaViewController implements Initializable {
         this.mediaPlayerHelper = mediaPlayerHelper;
     }
 
-    @FXML
+
     public void handlePlay(ActionEvent event) {
         Platform.runLater(() -> {
             if (mediaPlayerHelper != null) {
@@ -56,7 +46,6 @@ public class MediaViewController implements Initializable {
         });
     }
 
-    @FXML
     public void handlePause(ActionEvent event) {
         if (mediaPlayerHelper != null) {
             mediaPlayerHelper.pauseMovie();
@@ -85,8 +74,6 @@ public class MediaViewController implements Initializable {
                 // Convert the file to a URI
                 URI uri = file.toURI();
                 System.out.println("Media URI: " + uri.toString());
-
-                //virker ikke endnu...
 
                 // Create a new Media object from the URI
                 Media media = new Media(uri.toString());

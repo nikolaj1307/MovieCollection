@@ -1,11 +1,7 @@
 package GUI.Controller;
 
 import BE.Category;
-import BLL.CategoryManager;
-import BLL.MovieManager;
 import GUI.Model.CategoryModel;
-import GUI.Model.MovieModel;
-import GUI.Util.Alerts;
 import GUI.Util.MovieExceptions;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import javafx.event.ActionEvent;
@@ -20,11 +16,11 @@ public class CategoryAddRemoveViewController {
     private AddMovieController addMovieController;
 
     // Constructor for initializing model instances
-    public CategoryAddRemoveViewController() {
+    public CategoryAddRemoveViewController() throws MovieExceptions {
         try {
            categoryModel = new CategoryModel();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 
@@ -38,19 +34,16 @@ public class CategoryAddRemoveViewController {
     private MFXButton categoryCancelBtn;
 
     @FXML
-    private MFXButton categorySaveBtn;
-
-    @FXML
     private TextField categoryTextField;
 
-    public void onClickCategoryCancelBtn(ActionEvent event) throws MovieExceptions {
+    public void onClickCategoryCancelBtn(ActionEvent event) {
         // Close the current stage
         Stage stage = (Stage) categoryCancelBtn.getScene().getWindow();
         stage.close();
 
     }
 
-    public void onClickCategorySaveBtn(ActionEvent event) {
+    public void onClickCategorySaveBtn(ActionEvent event) throws MovieExceptions {
         try {
             categoryModel.createNewCategory(categoryTextField.getText());
 
@@ -67,7 +60,7 @@ public class CategoryAddRemoveViewController {
             stage.close();
 
         } catch (MovieExceptions e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 }

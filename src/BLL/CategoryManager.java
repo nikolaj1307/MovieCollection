@@ -1,11 +1,8 @@
 package BLL;
 
 import BE.Category;
-import BE.Movie;
 import DAL.DB.CategoryDAO_DB;
 import DAL.ICategoryDataAccess;
-import DAL.IMovieDataAccess;
-import GUI.Model.MovieModel;
 import GUI.Util.MovieExceptions;
 
 import java.util.List;
@@ -13,13 +10,6 @@ import java.util.List;
 public class CategoryManager {
 
     private ICategoryDataAccess categoryDAO;
-    private IMovieDataAccess movieDAO;
-    private MovieModel movieModel;
-
-
-    private boolean categoriesLoaded = false;
-
-    private List<Category> allCategories;
 
     public CategoryManager() throws MovieExceptions {
         try {
@@ -28,7 +18,7 @@ public class CategoryManager {
         } catch (MovieExceptions e) {
             throw new MovieExceptions(e);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
     }
 
@@ -48,12 +38,9 @@ public class CategoryManager {
         }
     }
 
-
     public void deleteCategory (Category selectedCategory) throws MovieExceptions {
         categoryDAO.deleteCategory(selectedCategory);
     }
-
-
 }
 
 

@@ -1,17 +1,13 @@
 // MediaPlayerHelper.java
 package GUI;
 
-// Importer de nødvendige klasser
 
 import BE.Movie;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.io.File;
-import java.net.URI;
 
 public class MediaPlayerHelper {
-    private Movie movie;
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
 
@@ -39,13 +35,6 @@ public class MediaPlayerHelper {
     public void pauseMovie() {
         if (mediaPlayer != null && isPlaying) {
             mediaPlayer.pause();
-            isPlaying = false;
-        }
-    }
-
-    private void stopCurrentMedia() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
             isPlaying = false;
         }
     }

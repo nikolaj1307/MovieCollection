@@ -1,7 +1,6 @@
 package DAL.DB;
 
 import BE.Category;
-import BE.Movie;
 import DAL.ICategoryDataAccess;
 import GUI.Util.MovieExceptions;
 
@@ -46,57 +45,6 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
         }
     }
 
-    public Category insertCatToCatMovie(Category category) throws MovieExceptions {
-
-        // SQL command
-        String sql = "INSERT INTO CatMovie  VALUES (?);";
-
-        try (Connection conn = databaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
-        {
-            // Bind parameters
-            stmt.setString(1, category.getCatName());
-
-            // Run the specified SQL statement
-            stmt.executeUpdate();
-
-            // Get the generated ID from the DB
-            ResultSet rs = stmt.getGeneratedKeys();
-            int id = 0;
-
-            if (rs.next()) {
-                id = rs.getInt(1);
-            }
-
-            return new Category(id, category.getCatName() );
-        }
-        catch (SQLException ex)
-        {
-            // create entry in log file
-            ex.printStackTrace();
-            throw new MovieExceptions("Could not insert category", ex);
-        }
-    }
-
-    public int getCatId(String catName) throws MovieExceptions {
-        try (Connection conn = databaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT GenreID FROM Genre WHERE GenreType = ?")) {
-
-            // Set parameters for the PreparedStatement
-            stmt.setString(1, catName);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                return rs.getInt("Id");
-
-            }
-            return -1;
-        } catch (SQLException e) {
-            throw new MovieExceptions("Error getting Category ID", e);
-        }
-    }
-
     @Override
     public Category createNewCategory(Category category) throws MovieExceptions {
         String sql = "INSERT INTO dbo.Category (CatName) VALUES (?);";
@@ -123,14 +71,8 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
             return createdCategory;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new MovieExceptions(e);
         }
-    }
-
-
-    @Override
-    public void updateCategory(Category category) throws MovieExceptions {
-
     }
 
         @Override

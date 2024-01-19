@@ -2,11 +2,8 @@ package DAL.DB;
 
 import GUI.Util.MovieExceptions;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -30,14 +27,18 @@ import java.util.Properties;
                 dataSource.setPortNumber(1433);
                 dataSource.setTrustServerCertificate(true);
             } catch (Exception e) {
-                throw new MovieExceptions(e);
+                throw new MovieExceptions("Could not get connection to database", e);
             }
         }
 
 
 
-        public Connection getConnection() throws SQLException {
-            return dataSource.getConnection();
+        public Connection getConnection() throws MovieExceptions {
+            try {
+                return dataSource.getConnection();
+            } catch (SQLException e) {
+                throw new MovieExceptions(e);
+            }
         }
 
         public static void main(String[] args) throws MovieExceptions {

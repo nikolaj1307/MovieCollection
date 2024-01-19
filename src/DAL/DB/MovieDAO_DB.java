@@ -1,11 +1,9 @@
 package DAL.DB;
 
-import BE.Category;
 import BE.Movie;
 import DAL.IMovieDataAccess;
 import GUI.Util.MovieExceptions;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,6 @@ public class MovieDAO_DB implements IMovieDataAccess {
                 return allMovies;
             }
             catch (SQLException ex){
-                ex.printStackTrace();
                 throw new MovieExceptions("Could not get movies from database", ex);
             }
         }
@@ -96,7 +93,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
 
                 return createdMovie;
             } catch (SQLException e) {
-                throw new MovieExceptions(e);
+                throw new MovieExceptions("Could not create movie in database",e);
             }
         }
 
@@ -115,9 +112,8 @@ public class MovieDAO_DB implements IMovieDataAccess {
             movie.setPersonalRating(newRating);
 
         } catch (SQLException e) {
-            throw new MovieExceptions(e);
+            throw new MovieExceptions("Could not update personal rating in database", e);
         }
-
     }
 
     @Override
@@ -138,7 +134,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
             movie.setLastView(sqlDate);
 
         } catch (SQLException e) {
-            throw new MovieExceptions(e);
+            throw new MovieExceptions("Could not update lastview in database", e);
         }
     }
 
@@ -163,7 +159,7 @@ public class MovieDAO_DB implements IMovieDataAccess {
             }
             catch (SQLException ex)
             {
-                throw new MovieExceptions("Could not delete movie", ex);
+                throw new MovieExceptions("Could not delete movie in database", ex);
             }
             return movie;
         }

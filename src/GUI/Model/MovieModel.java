@@ -3,6 +3,7 @@ package GUI.Model;
 import BE.Movie;
 import BLL.MovieManager;
 import BLL.Utility.MovieSearcher;
+import GUI.Util.MovieExceptions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -39,7 +40,7 @@ public class MovieModel {
     }
 
     // Method to create a new movie and add it to the manager and observable list
-    public void createMovie(String name, String catName, double rating, String fileLink) throws Exception {
+    public void createMovie(String name, String catName, double rating, String fileLink) throws MovieExceptions {
         // Create a new Movie object
         Movie movie = new Movie(name, catName, rating, fileLink);
 
@@ -50,7 +51,7 @@ public class MovieModel {
         moviesToBeViewed.add(movie);
     }
 
-    public void deleteMovie(Movie movie) throws Exception {
+    public void deleteMovie(Movie movie) throws MovieExceptions {
         // delete movie in DAL layer (through the layers)
         movieManager.deleteMovie(movie);
         // remove from observable list (and UI)
@@ -58,15 +59,15 @@ public class MovieModel {
         System.out.println("MovieModel");
     }
 
-    public void updatePersonalRating(Movie movie, Double newRating) throws Exception {
+    public void updatePersonalRating(Movie movie, Double newRating) throws MovieExceptions {
         movieManager.updatePersonalRating(movie, newRating);
     }
 
-    public void updateLastView(Movie movie, Date newDate) throws Exception {
+    public void updateLastView(Movie movie, Date newDate) throws MovieExceptions {
         movieManager.updateLastView(movie, newDate);
     }
 
-    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, List<String> selectedCategory, String searchQuery) {
+    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, List<String> selectedCategory, String searchQuery) throws MovieExceptions {
         List<Movie> moviesByRatingAndCategories = new ArrayList<>();
         for (Movie movie : moviesToBeViewed) {
 
