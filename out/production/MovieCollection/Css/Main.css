@@ -2,3 +2,13 @@
 {
     -fx-background-color: white;
 }
+
+#BorderPane
+{
+    -fx-background-color: rgb(46, 46, 46);
+}
+
+#movieTblView
+{
+    -fx-text-fill: black;
+}

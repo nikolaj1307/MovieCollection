@@ -138,6 +138,7 @@ public class InfoAPIViewController {
                 mediaViewController.setMediaPlayerHelper(new MediaPlayerHelper(media));
                 mediaViewController.setSelectedMovie(selectedMovie, (Stage) root.getScene().getWindow());
 
+                mainController.clearSelection();
 
             } catch (Exception e) {
                 throw new MovieExceptions(e);
