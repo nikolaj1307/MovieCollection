@@ -14,7 +14,7 @@ public class CategoryManager {
     public CategoryManager() throws MovieExceptions {
         try {
             categoryDAO = new CategoryDAO_DB();
-            movieModel = new MovieModel();
+
         } catch (MovieExceptions e) {
             throw new MovieExceptions(e);
         } catch (Exception e) {
