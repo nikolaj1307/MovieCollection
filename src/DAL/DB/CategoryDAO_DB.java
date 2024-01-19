@@ -5,7 +5,6 @@ import BE.Movie;
 import DAL.ICategoryDataAccess;
 import GUI.Util.MovieExceptions;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,32 +133,27 @@ public class CategoryDAO_DB implements ICategoryDataAccess {
 
     }
 
-
-    @Override
-    public void deleteCategoryFromMovie(Category category, Movie movie) throws MovieExceptions {
-        String sql =
-                "DElETE FROM dbo.CatMovie WHERE CategoryId = ? " +
-                        "DELETE FROM dbo.Movie WHERE Id = ?" +
-                        "DELETE FROM dbo.Category WHERE Id = ?";
+        @Override
+        public Category deleteCategory(Category category) throws MovieExceptions {
+            String sql = "DELETE FROM dbo.Category WHERE CatName = ?;";
 
 
-        try (Connection conn = databaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            // Bind parameters
-            stmt.setInt(1, category.getCatId());
-            stmt.setInt(2, movie.getId());
-            stmt.setInt(3, category.getCatId());
+            try (Connection conn = databaseConnector.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            throw new MovieExceptions("Could not delete category", ex);
+                // Bind parameters
+                stmt.setString(1, category.getCatName());
+
+                stmt.executeUpdate();
+                // Run the specified SQL statement
+
+            } catch (SQLException ex) {
+                throw new MovieExceptions("Could not delete movie", ex);
+            }
+
+            return category;
         }
     }
 
-    @Override
-    public Category deleteCategory(Category category) throws MovieExceptions {
-        return null;
-    }
-}
 
 

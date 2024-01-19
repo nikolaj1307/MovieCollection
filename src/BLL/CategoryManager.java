@@ -8,7 +8,6 @@ import DAL.IMovieDataAccess;
 import GUI.Model.MovieModel;
 import GUI.Util.MovieExceptions;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CategoryManager {
@@ -49,26 +48,12 @@ public class CategoryManager {
         }
     }
 
-    /*
-    public void deleteCategory(Category category) throws MovieExceptions {
-        try {
-            // Get the movies associated with the category
-            List<Movie> movies = movieModel.getMoviesByCategory(String.valueOf(category));
 
-            // Loop through each movie and delete the category association
-            for (Movie movie : movies) {
-                categoryDAO.deleteCategoryFromMovie(category, movie);
-            }
-
-            // Delete the category from the database
-            categoryDAO.deleteCategory(category);
-
-        } catch (Exception e) {
-            throw new MovieExceptions(e);
-        }
+    public void deleteCategory (Category selectedCategory) throws MovieExceptions {
+        categoryDAO.deleteCategory(selectedCategory);
     }
 
-     */
+
 }
 
 

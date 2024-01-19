@@ -9,9 +9,6 @@ import GUI.Util.MovieExceptions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryModel {
@@ -19,12 +16,13 @@ public class CategoryModel {
 
     private CategoryManager categoryManager;
     private CategoryDAO_DB categoryDAO;
+    private MovieModel movieModel;
 
     private ObservableList<Category> categoriesToBeViewed;
 
     public CategoryModel() throws Exception {
         categoryManager = new CategoryManager();
-
+        movieModel = new MovieModel();
         categoriesToBeViewed = FXCollections.observableArrayList();
         categoriesToBeViewed.addAll(categoryManager.getAllCategories());
     }
@@ -41,22 +39,12 @@ public class CategoryModel {
         categoriesToBeViewed.add(category);
     }
 
-/*
-    public void deleteCategory(String categoryName) throws MovieExceptions {
-        try {
-            Category category = new Category(categoryName);
-            categoryManager.deleteCategory(category);
 
-            // Remove the category from the observable list (and UI)
-            categoriesToBeViewed.remove(category);
-
-            // Print a message (optional)
-            System.out.println("CategoryModel: Category deleted");
-        } catch (Exception e) {
-            throw new MovieExceptions(e);
-        }
+    public void deleteCategory(Category selectedCategory) throws MovieExceptions {
+        categoryManager.deleteCategory(selectedCategory);
+        categoriesToBeViewed.remove(selectedCategory);
     }
 
- */
+
 }
 

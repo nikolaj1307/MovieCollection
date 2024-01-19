@@ -206,11 +206,11 @@ public class AddMovieController {
             // Close the current stage
             Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();
             stage.close();
-        } catch (Exception e){
-        // Handle the case where the user didn't enter a valid number for IMDb rating
-        alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating, AND pick a category for the movie.");
-        throw new MovieExceptions("Please enter a valid numeric value between 0 and 10");
-    }
+        } catch (Exception e) {
+            // Handle the case where the user didn't enter a valid number for IMDb rating
+            alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating, AND pick a category for the movie.");
+            throw new MovieExceptions("Please enter a valid numeric value between 0 and 10");
+        }
 
     }
 
@@ -266,42 +266,40 @@ public class AddMovieController {
 
     }
 
+
+    @FXML
     public void onClickRemoveCategoryBtn(ActionEvent event) throws MovieExceptions {
-       /*
-        String selectedCategory = categoryBox.getValue();
+        // Get the selected category from the categoryBox
+        String getSelectedCategory = categoryBox.getValue();
 
-        if (selectedCategory != null) {
-            List<Movie> moviesInCategory = movieModel.getMoviesByCategory(selectedCategory);
-            String movieList = moviesInCategory.stream()
-                    .map(Movie::getName)
-                    .collect(Collectors.joining(", "));
-
-            String alertMessage = "Are you sure you want to delete the category '" + selectedCategory + "'?\n" +
-                    "Movies in this category: " + movieList;
-
-            Alert confirmationAlert = alerts.showDeleteAlert(alertMessage);
-
-            Optional<ButtonType> result = confirmationAlert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.YES) {
-                try {
-                    // Delete the category from the model and data layer
-                    categoryModel.deleteCategory(selectedCategory);
-
-                    // Refresh the categories in the ComboBox
-                    loadCategories();
-
-                    mainController.updateMovieTable();
-                } catch (Exception e) {
-                    throw new MovieExceptions(e);
-                }
-            }
-        } else {
-            alerts.showAlert("No category is selected", "Please select a category before it can be deleted.");
+        // Check if a category is selected
+        if (getSelectedCategory == null) {
+            alerts.showAlert("Error", "Please select a category to remove.");
+            return;
         }
 
-        */
+        // Confirm with the user if they really want to delete the selected category
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Removal");
+        confirmationAlert.setHeaderText("Remove Category");
+        confirmationAlert.setContentText("Are you sure you want to remove the selected category? '" + getSelectedCategory + "'" );
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                // Call the appropriate method to delete the category from the database
+                categoryManager.deleteCategory(new Category(getSelectedCategory));
+
+                // Update the UI by reloading the categories
+                loadCategories();
+
+                categoryBox.clearSelection();
+            } catch (Exception e) {
+                throw new MovieExceptions(e);
+            }
+        }
     }
 }
+
 
 

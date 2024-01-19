@@ -15,7 +15,6 @@ public interface ICategoryDataAccess {
     public void updateCategory(Category category) throws MovieExceptions;
 
     public Category deleteCategory(Category category) throws MovieExceptions;
-
-    public void deleteCategoryFromMovie(Category category, Movie movie) throws MovieExceptions;
 }
+
 

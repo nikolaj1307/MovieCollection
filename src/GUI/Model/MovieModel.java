@@ -70,19 +70,6 @@ public class MovieModel {
         moviesToBeViewed.addAll(searchResult);
     }
 
-    public List<Movie> getMoviesByCategory(String selectedCategory) {
-        List<Movie> moviesByCategory = new ArrayList<>();
-        // Iterate over the observable list of movies
-        for(Movie movie : moviesToBeViewed) {
-            // Adjust this condition based on your actual data model
-            if(selectedCategory.equals(movie.getCatName())) {
-                // Add the movie to the list if it belongs to the specified category
-                moviesByCategory.add(movie);
-            }
-        }
-        return moviesByCategory;
-    }
-
     public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, String selectedCategory) {
         List<Movie> moviesByRatingAndCategories = new ArrayList<>();
         for (Movie movie : moviesToBeViewed) {
