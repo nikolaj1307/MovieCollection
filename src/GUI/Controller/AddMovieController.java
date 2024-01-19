@@ -288,7 +288,7 @@ public class AddMovieController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 // Call the appropriate method to delete the category from the database
-                categoryManager.deleteCategory(new Category(getSelectedCategory));
+                categoryModel.deleteCategory(new Category(getSelectedCategory));
 
                 // Update the UI by reloading the categories
                 loadCategories();
