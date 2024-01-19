@@ -17,7 +17,7 @@
 <?import javafx.scene.paint.Color?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<BorderPane fx:id="BorderPane" opacity="0.9" prefHeight="600.0" prefWidth="600.0" stylesheets="@../Css/Main.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainController">
+<BorderPane fx:id="BorderPane" opacity="0.9" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../Css/Main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.MainController">
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
@@ -66,7 +66,7 @@
             <children>
                 <HBox alignment="CENTER_LEFT" layoutX="2.0" layoutY="5.0" prefHeight="110.0" prefWidth="261.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="426.0" AnchorPane.topAnchor="5.0">
                     <children>
-                        <ImageView fitHeight="348.0" fitWidth="335.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="101.0" fitWidth="238.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../Images/movieLogo.png" />
                             </image>
@@ -82,10 +82,10 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" layoutX="347.0" layoutY="43.0" prefHeight="54.0" prefWidth="346.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="347.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="5.0">
+                <HBox alignment="CENTER_RIGHT" layoutX="330.0" layoutY="15.0" prefHeight="82.0" prefWidth="619.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="10.0">
                     <children>
-                        <MFXTextField fx:id="searchField" floatMode="ABOVE" prefHeight="30.0" prefWidth="150.0" promptText="🔍 Search " />
-                  <CheckComboBox fx:id="checkCatFilter" onInputMethodTextChanged="#onSelectCatFilter" onMouseClicked="#onSelectCatFilter">
+                        <MFXTextField fx:id="searchField" floatMode="ABOVE" prefHeight="30.0" prefWidth="168.0" promptText="🔍 Search " />
+                  <CheckComboBox fx:id="checkCatFilter" onInputMethodTextChanged="#onSelectCatFilter" onMouseClicked="#onSelectCatFilter" prefHeight="26.0" prefWidth="103.0" title="Category">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin></CheckComboBox>
@@ -94,6 +94,16 @@
                                 <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
                             </HBox.margin>
                         </MFXLegacyComboBox>
+                  <MFXButton fx:id="applyFilterBtn" buttonType="RAISED" onAction="#onClickApplyFilterBtn" rippleColor="#95ecff" text="Apply filter">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="40.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </MFXButton>
+                  <MFXButton fx:id="clearBtn" buttonType="RAISED" onAction="#onClickClearBtn" prefHeight="27.0" prefWidth="62.0" rippleColor="#95ecff" text="Clear">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </MFXButton>
                     </children>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

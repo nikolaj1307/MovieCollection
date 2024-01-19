@@ -171,16 +171,23 @@ public class AddMovieController {
     @FXML
     public void onClickAddMovieSaveBtn(ActionEvent event) throws MovieExceptions {
 
+
+        // Create a new movie using data from text fields
+        //   movieModel.createMovie(MovieNameField.getText(), categoryBox.getValue(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
+
+        // Retrieve data from text fields
+        String name = MovieNameField.getText();
+        String ratingText = ImdbRatingField.getText();
+        String fileLink = FilePathField.getText();
+        String category = categoryBox.getValue();
+
         try {
-            // Create a new movie using data from text fields
-            movieModel.createMovie(MovieNameField.getText(), categoryBox.getValue(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
+            if (ratingText.isEmpty()) {
+                alerts.showAlert("Error", "Please enter a valid rating.");
+                return;
+            }
 
-            // Retrieve data from text fields
-            String name = MovieNameField.getText();
             double rating = Double.parseDouble(ImdbRatingField.getText());
-            String fileLink = FilePathField.getText();
-            String category = categoryBox.getValue();
-
 
             // Validate the rating value
             if (rating < 0 || rating > 10) {
@@ -189,10 +196,10 @@ public class AddMovieController {
             }
 
 
-            /*if (category == null) {
-                alerts.showAlert("Error", "Please enter a valid category for the movie");
+            if (category == null || category.isEmpty()) {
+                alerts.showAlert("Error", "Please select a category for the movie");
                 return;
-            }*/
+            }
 
             // Create a new Movie object
             Movie newMovie = new Movie(name, category, rating, fileLink);
@@ -202,17 +209,20 @@ public class AddMovieController {
 
             // Update the playlist table in the main controller
             mainController.updateMovieTable();
+            movieModel.createMovie(MovieNameField.getText(), categoryBox.getValue(), Double.parseDouble(ImdbRatingField.getText()), FilePathField.getText());
             mainController.clearSelection();
 
             // Close the current stage
             Stage stage = (Stage) AddMovieCancelBtn.getScene().getWindow();
             stage.close();
-        } catch (Exception e) {
-            // Handle the case where the user didn't enter a valid number for IMDb rating
-            alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating, AND pick a category for the movie.");
-            throw new MovieExceptions("Please enter a valid numeric value between 0 and 10");
-        }
+        } catch (NumberFormatException e) {
+            alerts.showAlert("Error", "Please enter a valid numeric value for IMDb rating.");
+            throw new MovieExceptions(e);
 
+        } catch (Exception e) {
+            alerts.showAlert("Error", "An unexpected error occurred.");
+            throw new MovieExceptions("Error: An unexpected error occurred.", e);
+        }
     }
 
     public void onClickCategoryBox(ActionEvent event) throws MovieExceptions {

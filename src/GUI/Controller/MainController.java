@@ -43,6 +43,8 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
+    public MFXButton applyFilterBtn;
+    public MFXButton clearBtn;
     // FXML elements for UI controls
     @FXML
     private BorderPane BorderPane;
@@ -291,7 +293,8 @@ public class MainController implements Initializable {
 
     public void onSelectCatFilter(ActionEvent event) {
         filterAndSearchMovies();
-        System.out.println("hej");
+
+
     }
 
     public void filterAndSearchMovies() {
@@ -328,6 +331,22 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             throw new MovieExceptions(e);
         }
+    }
+
+    public void onClickApplyFilterBtn(ActionEvent event) {
+        filterAndSearchMovies();
+    }
+
+    public void onClickClearBtn(ActionEvent event) {
+        comBoxRating.getSelectionModel().clearSelection();
+        checkCatFilter.getCheckModel().clearChecks();
+
+        // Clear search field
+        searchField.clear();
+
+        // Reset table to show all movies
+        movieTblView.setItems(movieModel.getObservableMovies());
+
     }
 }
 
