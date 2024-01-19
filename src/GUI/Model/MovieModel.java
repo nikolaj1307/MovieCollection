@@ -17,7 +17,7 @@ public class MovieModel {
 
     // Manager for handling movie-related business logic
     private MovieManager movieManager;
-    private MovieSearcher movieSearcher = new MovieSearcher();
+    private MovieSearcher movieSearcher;
 
     // Constructor initializes the MovieManager and loads movies into the observable list
     public MovieModel() throws Exception {
@@ -29,6 +29,8 @@ public class MovieModel {
 
         // Load all movies from the manager into the observable list
         moviesToBeViewed.addAll(movieManager.getAllMovies());
+
+        movieSearcher = new MovieSearcher();
     }
 
     // Getter for the observable list of movies
@@ -64,19 +66,15 @@ public class MovieModel {
         movieManager.updateLastView(movie, newDate);
     }
 
-    public void searchMovie(String query) throws Exception {
-        List<Movie> searchResult = movieManager.searchMovie(query);
-        moviesToBeViewed.clear();
-        moviesToBeViewed.addAll(searchResult);
-    }
-
-    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, List<String> selectedCategory) {
+    public List<Movie> getMoviesByRatingAndCategories(Double selectedRating, List<String> selectedCategory, String searchQuery) {
         List<Movie> moviesByRatingAndCategories = new ArrayList<>();
         for (Movie movie : moviesToBeViewed) {
+
             boolean categoryIsMatch = selectedCategory == null || selectedCategory.isEmpty() || selectedCategory.contains(movie.getCatName());
             boolean ratingIsMatch = selectedRating == null || movie.getRating() >= selectedRating;
+            boolean titleIsMatch = movieSearcher.compareMovieTitle(searchQuery, movie);
 
-            if (categoryIsMatch && ratingIsMatch) {
+            if (categoryIsMatch && ratingIsMatch && titleIsMatch) {
                 moviesByRatingAndCategories.add(movie);
             }
         }

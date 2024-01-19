@@ -19,7 +19,7 @@ public class MovieSearcher {
         return searchResult;
     }
 
-    private boolean compareMovieTitle(String query, Movie movie){
+    public boolean compareMovieTitle(String query, Movie movie){
         return movie.getName().toLowerCase().contains(query.toLowerCase());
     }
 

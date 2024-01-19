@@ -57,7 +57,7 @@ public class MainController implements Initializable {
     private MFXButton btnRemove;
 
     @FXML
-    private CheckComboBox checkCatFilter;
+    private CheckComboBox<String> checkCatFilter;
 
     @FXML
     private TableColumn<Category, String> colCategory;
@@ -100,7 +100,7 @@ public class MainController implements Initializable {
     private CategoryManager categoryManager;
     private MovieManager movieManager;
 
-    private MovieSearcher movieSearcher = new MovieSearcher();
+    private MovieSearcher movieSearcher;
 
     // Constructor for initializing model instances
     public MainController() {
@@ -109,6 +109,7 @@ public class MainController implements Initializable {
             categoryManager = new CategoryManager();
             movieModel = new MovieModel();
             alerts = new Alerts();
+            movieSearcher = new MovieSearcher();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -135,7 +136,7 @@ public class MainController implements Initializable {
         //SearchBar
         searchField.textProperty().addListener(((observable, oldValue, newValue) -> {
             try {
-                searchMovies();
+                filterAndSearchMovies();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -281,7 +282,7 @@ public class MainController implements Initializable {
     }
 
     public void onClickRatFilterBox(ActionEvent event) {
-        filterMovies();
+        filterAndSearchMovies();
     }
 
     public void loadRatingFilters() {
@@ -289,23 +290,25 @@ public class MainController implements Initializable {
     }
 
     public void onSelectCatFilter(ActionEvent event) {
-        filterMovies();
+        filterAndSearchMovies();
+        System.out.println("hej");
     }
 
-    public void filterMovies() {
+    public void filterAndSearchMovies() {
         Double selectedRating = comBoxRating.getValue();
         List<String> selectedCategories = checkCatFilter.getCheckModel().getCheckedItems();
-
+        String searchedTitle = searchField.getText();
 
         try {
-            if (selectedRating != null || !selectedCategories.isEmpty()) {
+            if (selectedRating != null || !selectedCategories.isEmpty() || !searchedTitle.isEmpty()) {
 
-                List<Movie> filteredMovies = movieModel.getMoviesByRatingAndCategories(selectedRating, selectedCategories);
+                List<Movie> filteredMovies = movieModel.getMoviesByRatingAndCategories(selectedRating, selectedCategories,searchedTitle);
                 movieTblView.setItems(FXCollections.observableArrayList(filteredMovies));
-                System.out.println(selectedCategories);
-                movieTblView.refresh();
+
+                updateMovieTable();
             } else {
                 movieTblView.setItems(movieModel.getObservableMovies());
+                updateMovieTable();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -325,12 +328,6 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             throw new MovieExceptions(e);
         }
-    }
-
-    public void searchMovies(){
-        String searchQuery = searchField.getText();
-        List<Movie> searchedMovies = movieSearcher.search(movieTblView.getItems(),searchQuery);
-        movieTblView.setItems(FXCollections.observableArrayList(searchedMovies));
     }
 }
 
